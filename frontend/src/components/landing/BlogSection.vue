@@ -3,10 +3,11 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
+import { formatDate } from '@/lib/formatDate'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // const latestPosts = [
 //   {
@@ -82,7 +83,7 @@ onMounted(() => {
             <span class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 bg-secondary text-secondary-foreground rounded">
                 {{ post.tags[0] }}
             </span>
-            <time class="text-xs text-muted-foreground">{{ post.date }}</time>
+            <time class="text-xs text-muted-foreground" :datetime="post.date">{{ formatDate(post.date, locale) }}</time>
           </div>
           <CardTitle class="text-2xl font-bold leading-tight tracking-tight">
             {{ post.title }}
