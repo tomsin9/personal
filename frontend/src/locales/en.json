@@ -1,9 +1,17 @@
 {
+    "system": {
+        "toggleTheme": "Toggle Theme",
+        "viewProjects": "View Projects"
+    },
     "blog": {
         "title": "Blog",
         "description": "Blog Description",
         "author": "Author",
         "date": "Date",
-        "content": "Content"
+        "content": "Content",
+        "recentPosts": "Recent Posts",
+        "readMore": "Read More",
+        "viewAllPosts": "View All Posts",
+        "sectionDescription": "Latest technical insights and project updates."
     }
 }
