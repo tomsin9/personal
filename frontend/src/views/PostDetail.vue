@@ -53,7 +53,7 @@ onMounted(async () => {
     
     <article 
       class="prose dark:prose-invert max-w-none mt-12"
-      v-html="marked(post.content)"
+      v-html="marked(post.content ?? '')"
     ></article>
   </div>
 </template>

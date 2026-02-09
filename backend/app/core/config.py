@@ -10,7 +10,8 @@ class Settings(BaseSettings):
     API_ADMIN_USERNAME: str
     API_ADMIN_PASSWORD: str
     
-    ALLOWED_ORIGINS: str = "http://localhost:5173"
+    # Comma-separated; dev (Vite :5173) + prod (e.g. nginx :80 on localhost)
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost,http://127.0.0.1"
     
     model_config = SettingsConfigDict(
         env_file=".env", 

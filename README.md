@@ -23,14 +23,21 @@ A personal website with a Vue 3 frontend and FastAPI backend.
    cp .env.example .env
    ```
 
-2. Start all services:
+2. **Development** – Vite dev server (hot reload), backend with `--reload`:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
+   - Frontend: http://localhost:5173  
+   - Backend API: http://localhost:8000  
 
-3. Open:
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:8000
+3. **Production** – Built frontend served by nginx, no source mounts:
+   ```bash
+   docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
+   ```
+   - Frontend: http://localhost (port 80 by default)  
+   - Backend API: http://localhost:8000  
+   - If port 80 is already in use on your server, set `FRONTEND_PORT=8080` (or another port) in `.env`.  
+   - Frontend uses `frontend/Dockerfile` (multi-stage build + nginx). Dev uses `frontend/Dockerfile.dev`.
 
 ### Without Docker
 
@@ -58,10 +65,14 @@ Frontend runs at http://localhost:5173. Set `VITE_API_URL` if your API is not at
 ## Project Structure
 
 ```
-├── backend/          # FastAPI app (blog API, DB models)
-├── frontend/          # Vue 3 + Vite app
-├── docker-compose.yaml
-└── .env.example       # Copy to .env and fill in
+├── backend/              # FastAPI app (blog API, DB models)
+├── frontend/
+│   ├── Dockerfile        # Production: build + nginx
+│   ├── Dockerfile.dev    # Development: Vite dev server
+│   └── nginx.conf        # SPA config for production serve
+├── docker-compose.yaml       # Default: dev mode
+├── docker-compose.prod.yaml  # Override for production
+└── .env.example             # Copy to .env and fill in
 ```
 
 ## License

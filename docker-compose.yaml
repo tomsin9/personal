@@ -26,7 +26,9 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     env_file: .env
     command: npm run dev -- --host
     ports:

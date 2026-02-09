@@ -1,4 +1,3 @@
-import type { Updater } from "@tanstack/vue-table"
 import type { ClassValue } from "clsx"
 import type { Ref } from "vue"
 import { clsx } from "clsx"
@@ -8,9 +7,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
+/** For table column value updates: value or (prev) => newValue */
+export function valueUpdater<T>(updaterOrValue: T | ((prev: T) => T), ref: Ref<T>) {
   ref.value
     = typeof updaterOrValue === "function"
-      ? updaterOrValue(ref.value)
+      ? (updaterOrValue as (prev: T) => T)(ref.value)
       : updaterOrValue
 }

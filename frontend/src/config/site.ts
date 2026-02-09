@@ -1,8 +1,11 @@
 // src/config/site.ts
 
-/** API base URL (no trailing slash). Use VITE_API_BASE_URL in .env for environment-specific value. */
+/** API base URL (no trailing slash). Empty = same origin (nginx proxy in production). */
 const env = (import.meta as unknown as { env?: { VITE_API_BASE_URL?: string } }).env
-export const apiBaseUrl = env?.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000'
+const raw = env?.VITE_API_BASE_URL
+// import.meta.env may be undefined when this file is loaded by vite.config (Node context)
+export const apiBaseUrl =
+  raw !== undefined && raw !== "" ? raw : (import.meta.env?.DEV ? "http://127.0.0.1:8000" : "")
 
 export const siteConfig = {
     siteUrl: "https://tomsinp.com",

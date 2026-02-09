@@ -1,14 +1,19 @@
-FROM node:20-slim
+# ========== Stage 1: Build ==========
+FROM node:20-slim AS builder
 WORKDIR /app
 
-# 先搬 package.json 嚟裝 dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# 再搬其他 code
 COPY . .
+# Production: same-origin API via nginx proxy; override with build-arg if needed
+ARG VITE_API_BASE_URL=
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+RUN npm run build
 
-# 確保 node_modules/.bin 喺 PATH 入面
-ENV PATH /app/node_modules/.bin:$PATH
-
-CMD ["npm", "run", "dev", "--", "--host"]
+# ========== Stage 2: Production ==========
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
