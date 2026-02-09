@@ -23,8 +23,8 @@ function scrollToContact() {
 </script>
 
 <template>
-  <div class="relative w-full py-24 lg:py-32 overflow-hidden bg-background">
-    <div class="absolute inset-0 z-0 bg-[radial-gradient(45%_45%_at_50%_50%,#f0f0f0_0,white_100%)] dark:bg-[radial-gradient(45%_45%_at_50%_50%,#18181b_0,#09090b_100%)]"></div>
+  <div class="relative w-full py-24 lg:py-32 overflow-hidden">
+    <div class="absolute inset-0 z-0"></div>
 
     <div class="container relative z-10 mx-auto px-4 md:px-6">
       <div class="flex flex-col items-center space-y-4 text-center">
@@ -34,7 +34,7 @@ function scrollToContact() {
           <span>Full Stack Web Developer</span>
         </div>
 
-        <h1 class="text-4xl font-extrabold tracking-tighter lg:text-6xl" v-html="personalInfo.heroTitle"></h1>
+        <h1 class="text-4xl font-extrabold tracking-tighter md:text-5xl lg:text-6xl" v-html="personalInfo.heroTitle"></h1>
         
         <p class="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
             {{ personalInfo.about }}

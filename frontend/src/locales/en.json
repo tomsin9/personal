@@ -14,6 +14,13 @@
         "blog": "Blog",
         "contact": "Contact"
     },
+    "pagination": {
+        "first": "First",
+        "last": "Last",
+        "previous": "Previous",
+        "next": "Next",
+        "more": "More Pages"
+    },
     "blog": {
         "title": "Blog",
         "description": "Latest technical insights and project updates.",
@@ -26,6 +33,15 @@
         "readMore": "Read More",
         "viewAllPosts": "View All Posts",
         "noPosts": "No posts yet. Stay tuned!"
+    },
+    "projects": {
+        "title": "Projects",
+        "description": "A collection of projects I've worked on recently.",
+        "viewAllProjects": "View All Projects",
+        "liveDemo": "Live Demo",
+        "link": "Link",
+        "showMore": "Show More",
+        "showLess": "Show Less"
     },
     "contact": {
         "title": "Let's Connect",

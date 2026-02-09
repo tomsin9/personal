@@ -103,7 +103,7 @@ onMounted(() => {
                               <component :is="social.icon" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="bottom" :side-offset="5" class="bg-background text-foreground font-medium text-xs">
+                        <TooltipContent side="bottom" :side-offset="10" class="font-medium text-xs">
                             {{ t(social.name) }}
                         </TooltipContent>
                       </Tooltip>

@@ -23,7 +23,7 @@ def create_db_and_tables():
         result = session.exec(statement).first()
         if not result:
             welcome_post = Blog(
-                title="Welcome to My Portfolio!",
+                title="Welcome to My Personal Website!",
                 excerpt="This is your first blog post generated automatically.",
                 content="## Hello World\nSuccessfully connected FastAPI and Vue 3!",
                 is_published=True,

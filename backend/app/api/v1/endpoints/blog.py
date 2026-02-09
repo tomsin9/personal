@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select, func
 from typing import List, Dict, Any
 
-from app.db import get_session
+from app.db.session import get_session
 from app.core.auth import get_current_username
 from app.models.blog import Blog
 

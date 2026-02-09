@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
 import { formatDate } from '@/lib/formatDate'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { useRoute, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import {
   Pagination,
@@ -17,34 +18,32 @@ import {
   PaginationItem,
 } from '@/components/ui/pagination'
 
+import type { Post } from '@/types/blog'
+
 const { t, locale } = useI18n()
 
-interface Post {
-  id: number
-  title: string
-  date: string
-  excerpt: string
-  tags: string[]
-}
+const route = useRoute()
+const router = useRouter()
 
 const posts = ref<Post[]>([])
 const totalPosts = ref(0) // Get from backend
-const currentPage = ref(1)
 const postsPerPage = 12
 const isLoading = ref(true)
+
+const currentPage = ref(Number(route.query.page) || 1)
 
 const fetchPosts = async () => {
   isLoading.value = true
   try {
-    const response = await axios.get(`${apiBaseUrl}/api/v1/blog`, {
+    const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
       params: {
         page: currentPage.value,
         size: postsPerPage
       }
     })
-    // 注意：依家要攞 response.data.items 同 .total
-    posts.value = response.data.items
-    totalPosts.value = response.data.total
+    // now we need to get response.data.items and response.data.total
+    posts.value = response.data?.items || []
+    totalPosts.value = response.data?.total || 0
   } catch (error) {
     console.error('Fetch posts error:', error)
   } finally {
@@ -52,16 +51,21 @@ const fetchPosts = async () => {
   }
 }
 
-// 當 currentPage 改變時，重新去後端攞數
 const handlePageChange = (newPage: number) => {
   currentPage.value = newPage
-  fetchPosts()
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  router.push({ query: { page: newPage.toString() } })
 }
 
-onMounted(() => {
-  fetchPosts()
-})
+watch(
+  () => route.query.page,
+  (newPage) => {
+    currentPage.value = Number(newPage) || 1
+    fetchPosts()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  },
+  { immediate: true } // with this, we can skip onMounted
+)
+
 </script>
 
 <template>
@@ -93,13 +97,14 @@ onMounted(() => {
         </router-link>
       </div>
 
-      <div class="flex justify-center mt-12">
+      <div v-if="totalPosts > postsPerPage" class="flex justify-center mt-12">
         <Pagination 
+          v-model:page="currentPage"
           :total="totalPosts" 
-          :sibling-count="1" 
-          show-edges 
           :default-page="1"
+          :sibling-count="1" 
           :items-per-page="postsPerPage"
+          show-edges 
           @update:page="handlePageChange"
         >
           <PaginationContent v-slot="{ items }" class="flex items-center gap-1">

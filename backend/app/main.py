@@ -8,9 +8,9 @@ from contextlib import asynccontextmanager
 from sqlmodel import Session
 from app.core.config import settings
 
-from app.db import get_session
-from app.db import init_db, create_db_and_tables
-from app.api.v1.blog import router as blog_router
+from app.db.session import get_session
+from app.db.session import init_db, create_db_and_tables
+from app.api.v1.api import api_router
 
 security = HTTPBasic()
 
@@ -28,23 +28,23 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 【開機時執行】
-    print("🚀 正在初始化資料庫...")
+    # When the server starts
+    print("🚀 Initializing database...")
     # init_db() 
-    create_db_and_tables() # 佢已經包含咗 init_db() 嘅功能
+    create_db_and_tables() # It already contains the init_db() function
     yield
     
-    # 【熄機時執行】
-    print("👋 正在關閉 API...")
+    # When the server stops
+    print("👋 Stopping API...")
     
 
 app = FastAPI(
-    title="Portfolio Website API",
+    title="Personal website API",
     lifespan=lifespan,
-    docs_url="/secret-admin-portal"
+    docs_url="/admin/414"
 )
 
-app.include_router(blog_router, prefix="/api/v1/blog")
+app.include_router(api_router, prefix="/api/v1")
 
 app.add_middleware(
     CORSMiddleware,

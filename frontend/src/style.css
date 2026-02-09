@@ -113,9 +113,10 @@ button:focus-visible {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
+    /* --background: 240 10% 3.9%; */
+    --background: 240 10% 8%;
     --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
+    --card: 240 10% 12%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
@@ -157,8 +158,10 @@ button:focus-visible {
 
 /* Social link hover effects */
 .social-link[data-social="github"]:hover {
-  background: #2b3137;
-  border-color: #2b3137;
+  /* background: #2b3137;
+  border-color: #2b3137; */
+  background: #000;
+  border-color: #000;
   color: #fff;
 }
 

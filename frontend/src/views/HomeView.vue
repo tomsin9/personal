@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Hero from '../components/landing/Hero.vue'
 import BlogSection from '../components/landing/BlogSection.vue'
+import ProjectsSection from '../components/landing/ProjectsSection.vue'
 import ContactSection from '../components/landing/ContactSection.vue'
 
 const route = useRoute()
@@ -21,5 +22,6 @@ onMounted(() => {
 <template>
   <Hero />
   <BlogSection />
+  <ProjectsSection />
   <ContactSection />
 </template>

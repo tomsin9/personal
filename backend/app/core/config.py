@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Union
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Portfolio Website"
+    PROJECT_NAME: str = "Personal Website"
     DATABASE_URL: str
     DEBUG: bool = False
     PORT: int = 8000

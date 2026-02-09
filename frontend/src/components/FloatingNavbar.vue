@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDark, useToggle } from '@vueuse/core'
@@ -30,8 +30,8 @@ export interface FloatingNavItem {
 
 const navItems: FloatingNavItem[] = [
   { label: 'navbar.home', icon: Home, href: '/', section: '' },
-  { label: 'navbar.projects', icon: Briefcase, href: '/#projects', section: 'projects' },
   { label: 'navbar.blog', icon: BookOpen, href: '/blog', section: 'blog' },
+  { label: 'navbar.projects', icon: Briefcase, href: '/#projects', section: 'projects' },
   { label: 'navbar.contact', icon: Mail, href: '/#contact', section: 'contact' },
 ]
 
@@ -96,7 +96,8 @@ function toggleLocale() {
 
 function isRouteActive(item: FloatingNavItem) {
   if (item.href.includes('#')) {
-    return currentHash.value === (item.section ?? getHashFromHref(item.href))
+    // Hash sections (e.g. #projects, #contact) only active when on home page
+    return route.path === '/' && currentHash.value === (item.section ?? getHashFromHref(item.href))
   }
   return route.path === item.href
 }
@@ -105,8 +106,16 @@ const themeLabel = computed(() =>
   isDark.value ? t('system.toggleTheme') : t('system.toggleTheme')
 )
 
+// Keep currentHash in sync with route so active state is correct after navigation
+watch(
+  () => ({ path: route.path, hash: route.hash }),
+  ({ hash }) => {
+    currentHash.value = hash ? hash.replace(/^#/, '') : ''
+  },
+  { immediate: true }
+)
+
 onMounted(() => {
-  currentHash.value = getHash()
   window.addEventListener('hashchange', updateHash)
 })
 
@@ -123,7 +132,7 @@ onUnmounted(() => {
     >
       <div
         :class="cn(
-          'flex items-center gap-0.5 rounded-full border px-2 py-1.5',
+          'flex items-center gap-0.5 rounded-full border px-2 py-1.5 lg:gap-1',
           'bg-background/95 border-border shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80'
         )"
       >
@@ -136,15 +145,17 @@ onUnmounted(() => {
                 :href="item.href"
                 @click="handleNavClick($event, item)"
                 :class="cn(
-                  'inline-flex size-9 shrink-0 items-center justify-center rounded-full transition-all duration-200 hover:scale-110 sm:size-10',
+                  'inline-flex size-9 shrink-0 items-center justify-center gap-2 rounded-full px-2 transition-all duration-200 hover:scale-110 sm:size-10',
+                  'lg:size-auto lg:min-h-10 lg:py-2 lg:px-3',
                   'text-foreground hover:bg-accent hover:text-accent-foreground',
                   isRouteActive(item) && 'text-primary bg-accent/50'
                 )"
               >
-                <component :is="item.icon" class="size-[1.125rem] sm:size-5" />
+                <component :is="item.icon" class="size-[1.125rem] shrink-0 sm:size-5" />
+                <span class="hidden text-sm font-medium lg:inline">{{ t(item.label) }}</span>
               </component>
             </TooltipTrigger>
-            <TooltipContent side="top" :side-offset="15" class="bg-foreground text-background font-medium text-xs">
+            <TooltipContent side="top" :side-offset="15" class="font-medium text-xs lg:hidden">
               {{ t(item.label) }}
             </TooltipContent>
           </Tooltip>
