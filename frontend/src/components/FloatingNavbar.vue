@@ -151,7 +151,7 @@ onUnmounted(() => {
                   isRouteActive(item) && 'text-primary bg-accent/50'
                 )"
               >
-                <component :is="item.icon" class="size-[1.125rem] shrink-0 sm:size-5" />
+                <component :is="item.icon" class="size-[1.125rem] shrink-0 sm:size-5" :stroke-width="1.5" />
                 <span class="hidden text-sm font-medium lg:inline">{{ t(item.label) }}</span>
               </component>
             </TooltipTrigger>
@@ -187,8 +187,8 @@ onUnmounted(() => {
               class="size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10"
               @click="toggleDark()"
             >
-              <Sun class="size-[1.125rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 sm:size-5" />
-              <Moon class="absolute size-[1.125rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 sm:size-5" />
+              <Sun class="size-[1.125rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 sm:size-5" :stroke-width="1.5" />
+              <Moon class="absolute size-[1.125rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 sm:size-5" :stroke-width="1.5" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">

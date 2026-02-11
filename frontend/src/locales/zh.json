@@ -21,6 +21,9 @@
         "next": "下一頁",
         "more": "更多"
     },
+    "about": {
+        "title": "關於我"
+    },
     "blog": {
         "title": "網誌",
         "description": "最新技術洞察和項目更新。",

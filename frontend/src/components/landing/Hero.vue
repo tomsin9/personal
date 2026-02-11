@@ -8,11 +8,15 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Mail, Code, Github, Linkedin, Instagram } from 'lucide-vue-next'
 
 const { locale, t } = useI18n()
-// 根據當前語言 locale (zh/en) 自動計算要顯示嘅簡介
 const personalInfo = computed(() => siteConfig.personal[locale.value])
 
 function openInNewTab(url) {
   window.open(url, '_blank', 'noopener,noreferrer')
+}
+
+function scrollToProjects() {
+  const el = document.getElementById('projects')
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 function scrollToContact() {
@@ -23,7 +27,7 @@ function scrollToContact() {
 </script>
 
 <template>
-  <div class="relative w-full py-24 lg:py-32 overflow-hidden">
+  <div class="relative w-full py-32 min-h-[100vh] md:min-h-0 lg:min-h-0 xl:min-h-[100vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0"></div>
 
     <div class="container relative z-10 mx-auto px-4 md:px-6">
@@ -37,11 +41,11 @@ function scrollToContact() {
         <h1 class="text-4xl font-extrabold tracking-tighter md:text-5xl lg:text-6xl" v-html="personalInfo.heroTitle"></h1>
         
         <p class="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-            {{ personalInfo.about }}
+            {{ personalInfo.heroDescription }}
         </p>
 
         <div class="flex flex-col gap-2 min-[400px]:flex-row justify-center items-center pt-4">
-          <Button size="lg" class="px-7 font-bold tracking-wide">
+          <Button size="lg" class="px-7 font-bold tracking-wide" as="a" href="#projects" @click.prevent="scrollToProjects">
             {{ t('system.viewProjects') }}
             <ArrowRight class="ml-2 h-4 w-4" />
           </Button>

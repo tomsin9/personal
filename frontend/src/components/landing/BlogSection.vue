@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="blog" class="container py-24 px-4 md:px-8">
+  <section id="blog" class="container py-20 px-4 md:px-8">
     <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
         <h2 class="text-3xl font-bold tracking-tight">

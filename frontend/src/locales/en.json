@@ -21,6 +21,9 @@
         "next": "Next",
         "more": "More Pages"
     },
+    "about": {
+        "title": "About Me"
+    },
     "blog": {
         "title": "Blog",
         "description": "Latest technical insights and project updates.",

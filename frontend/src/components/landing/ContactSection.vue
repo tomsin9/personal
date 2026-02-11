@@ -70,7 +70,7 @@ onMounted(() => {
   <section
     ref="sectionRef" 
     id="contact"
-    class="contact-section relative py-24 px-6 overflow-hidden scroll-mt-16 scroll-mb-24">
+    class="contact-section relative py-20 px-6 overflow-hidden scroll-mt-16 scroll-mb-24">
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
         <h2 class="text-4xl font-bold tracking-tighter lg:text-5xl mb-6 animate-text">

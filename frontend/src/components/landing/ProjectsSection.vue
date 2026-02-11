@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/item'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ExternalLink, Github, ChevronDown, ChevronUp } from 'lucide-vue-next'
+import { ExternalLink, Github, ChevronDown, ChevronUp, Code } from 'lucide-vue-next'
 
 import type { Project } from '@/types/project'
 
@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="projects" class="container py-24 px-4 md:px-8">
+  <section id="projects" class="container py-20 px-4 md:px-8">
     <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
         <h2 id="projects-title" class="text-3xl font-bold tracking-tight">
@@ -80,20 +80,22 @@ onMounted(() => {
         class="group p-4 transition-colors bg-card border hover:border-zinc-500/50"
       >
         <div class="w-full flex items-start md:items-center gap-4">
-          <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border">
+          <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border flex items-center justify-center">
             <img
-              :src="project.image"
+              v-if="project.image"
+              :src="`http://localhost:8055/assets/${project.image}?width=600&quality=80&format=webp`"
               :alt="project.title"
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             >
+            <Code v-else class="size-6 text-muted-foreground dark:text-muted" />
           </ItemMedia>
 
           <ItemContent class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-2">
-              <ItemTitle class="text-lg font-semibold truncate">
+            <div class="flex flex-wrap flex-col md:flex-row justify-between items-start gap-2">
+              <ItemTitle class="min-w-0 flex-1 text-lg font-semibold break-words">
                 {{ project.title }}
               </ItemTitle>
-              <div class="flex gap-1">
+              <div class="flex flex-wrap gap-1">
                 <Badge v-for="tag in project.tags" :key="tag" variant="secondary" class="text-[10px] px-1.5 h-5 whitespace-nowrap">
                   {{ tag }}
                 </Badge>
