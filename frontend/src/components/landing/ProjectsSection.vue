@@ -83,7 +83,7 @@ onMounted(() => {
           <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border flex items-center justify-center">
             <img
               v-if="project.image"
-              :src="`http://localhost:8055/assets/${project.image}?width=600&quality=80&format=webp`"
+              :src="project.image"
               :alt="project.title"
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             >
