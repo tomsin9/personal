@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { trackPageView } from '@/lib/analytics'
 import HomeView from '../views/HomeView.vue'
 import BlogView from '../views/BlogView.vue'
 import PostDetail from '../views/PostDetail.vue'
@@ -15,6 +16,10 @@ const router = createRouter({
     scrollBehavior() {
         return { top: 0 }
     }
+})
+
+router.afterEach((to) => {
+    trackPageView(to.fullPath)
 })
 
 export default router
