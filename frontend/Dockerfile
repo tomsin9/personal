@@ -7,8 +7,8 @@ RUN npm ci
 
 COPY . .
 # Production: same-origin API via nginx proxy; override with build-arg if needed
-ARG VITE_API_BASE_URL=
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # ========== Stage 2: Production ==========

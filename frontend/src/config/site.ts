@@ -1,11 +1,15 @@
 // src/config/site.ts
 
 /** API base URL (no trailing slash). Empty = same origin (nginx proxy in production). */
-const env = (import.meta as unknown as { env?: { VITE_API_BASE_URL?: string } }).env
-const raw = env?.VITE_API_BASE_URL
-// import.meta.env may be undefined when this file is loaded by vite.config (Node context)
+const env = (import.meta as unknown as { env?: { VITE_API_URL?: string } }).env
+const raw = env?.VITE_API_URL
+
 export const apiBaseUrl =
-  raw !== undefined && raw !== "" ? raw : (import.meta.env?.DEV ? "http://127.0.0.1:8000" : "")
+  raw !== undefined && raw !== "" 
+    ? raw 
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+        ? "http://127.0.0.1:8000" 
+        : ""); // Production environment forces empty string, uses relative path
 
 export const siteConfig = {
     siteUrl: "https://tomsinp.com",
