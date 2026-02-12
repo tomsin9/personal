@@ -6,7 +6,8 @@
         "switchToZH": "切換至中文",
         "switchToEN": "切換至英文",
         "lightMode": "日間模式",
-        "darkMode": "夜間模式"
+        "darkMode": "夜間模式",
+        "backToHome": "返回首頁"
     },
     "navbar": {
         "home": "首頁",

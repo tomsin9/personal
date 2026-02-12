@@ -6,7 +6,8 @@
         "switchToZH": "Switch to Chinese",
         "switchToEN": "Switch to English",
         "lightMode": "Light Mode",
-        "darkMode": "Dark Mode"
+        "darkMode": "Dark Mode",
+        "backToHome": "Back to Home"
     },
     "navbar": {
         "home": "Home",

@@ -3,8 +3,8 @@ import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
-import { formatDate } from '@/lib/formatDate'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
+import BlogCard from '@/components/BlogCard.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,7 +20,7 @@ import {
 
 import type { Post } from '@/types/blog'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -69,7 +69,7 @@ watch(
 </script>
 
 <template>
-  <div class="container max-w-5xl py-24 px-4 md:px-8">
+  <div class="container max-w-5xl py-20 px-4 md:px-8">
     <div class="text-center mb-12">
       <h2 class="text-4xl lg:text-5xl font-bold mb-6">
         {{ t('blog.title') }}
@@ -85,19 +85,8 @@ watch(
 
     <div v-else-if="posts.length > 0">
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 mb-10">
-        <router-link v-for="post in posts" :key="post.id" :to="{ name: 'post-detail', params: { id: post.id } }">
-          <Card class="flex flex-col h-full hover:border-zinc-500/50 transition-all">
-            <CardHeader>
-              <div class="flex justify-between text-xs text-muted-foreground mb-2">
-                <span>{{ post.tags?.[0] }}</span>
-                <time>{{ formatDate(post.created_at, locale) }}</time>
-              </div>
-              <CardTitle class="line-clamp-2">{{ post.title }}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-sm text-muted-foreground line-clamp-2">{{ post.excerpt || post.content?.substring(0, 100) + '...' }}</p>
-            </CardContent>
-          </Card>
+        <router-link v-for="post in posts" :key="post.id" :to="{ name: 'post-detail', params: { id: post.id } }" class="block">
+          <BlogCard :post="post" />
         </router-link>
       </div>
 
