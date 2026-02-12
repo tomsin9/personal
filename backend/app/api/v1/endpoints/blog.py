@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select, func
 from typing import List, Dict, Any
@@ -87,7 +89,8 @@ def update_post(
     for key, value in blog_data.items():
         if key != "id":
             setattr(db_blog, key, value)
-            
+
+    db_blog.updated_at = datetime.now(timezone.utc)
     session.add(db_blog)
     session.commit()
     session.refresh(db_blog)

@@ -3,7 +3,8 @@ import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
-import { Card } from '@/components/ui/card'
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import BlogCard from '@/components/BlogCard.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
@@ -79,8 +80,25 @@ watch(
       </p>
     </div>
 
-    <div v-if="isLoading" class="grid gap-6 sm:grid-cols-2">
-      <Card v-for="i in posts.length" :key="i" class="animate-pulse h-[200px] bg-muted/50"></Card>
+    <div v-if="isLoading" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 mb-10">
+      <Card v-for="i in posts.length" :key="i" class="flex flex-col h-full justify-between border-zinc-500/20">
+        <CardHeader>
+          <div class="flex justify-between items-start mb-2">
+            <Skeleton class="h-5 w-16" />
+            <Skeleton class="h-4 w-20" />
+          </div>
+          <Skeleton class="h-6 w-full mt-2" />
+          <Skeleton class="h-6 w-4/5" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton class="h-4 w-full" />
+          <Skeleton class="h-4 w-full mt-2" />
+          <Skeleton class="h-4 w-2/3 mt-2" />
+        </CardContent>
+        <CardFooter>
+          <Skeleton class="h-5 w-24" />
+        </CardFooter>
+      </Card>
     </div>
 
     <div v-else-if="posts.length > 0">

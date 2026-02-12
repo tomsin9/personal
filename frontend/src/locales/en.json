@@ -2,12 +2,17 @@
     "system": {
         "toggleTheme": "Toggle Theme",
         "viewProjects": "View Projects",
+        "aboutMe": "About Me",
         "contactMe": "Contact Me",
         "switchToZH": "Switch to Chinese",
         "switchToEN": "Switch to English",
         "lightMode": "Light Mode",
         "darkMode": "Dark Mode",
-        "backToHome": "Back to Home"
+        "backToHome": "Back to Home",
+        "logout": "Log out",
+        "save": "Save",
+        "saving": "Saving...",
+        "cancel": "Cancel"
     },
     "navbar": {
         "home": "Home",
@@ -21,6 +26,21 @@
         "previous": "Previous",
         "next": "Next",
         "more": "More Pages"
+    },
+    "auth": {
+        "adminLogin": "Admin Login",
+        "username": "Username",
+        "password": "Password",
+        "loggingIn": "Logging in...",
+        "login": "Login",
+        "loginSuccess": "Welcome back",
+        "loginSuccessDescription": "You have been logged in successfully.",
+        "loginFailed": "Login Failed",
+        "loginFailedDescription": "Please try again.",
+        "incorrectUsernameOrPassword": "Incorrect username or password",
+        "logoutSuccess": "Logged out",
+        "logoutSuccessDescription": "You have been logged out successfully.",
+        "pleaseLogInAgain": "Session expired. Please log in again."
     },
     "about": {
         "title": "About Me"
@@ -36,7 +56,16 @@
         "recentPosts": "Recent Posts",
         "readMore": "Read More",
         "viewAllPosts": "View All Posts",
-        "noPosts": "No posts yet. Stay tuned!"
+        "noPosts": "No posts yet. Stay tuned!",
+        "editPost": "Edit Post",
+        "draft": "Draft",
+        "addTag": "Add tag",
+        "published": "Published",
+        "titlePlaceholder": "Post title",
+        "excerpt": "Excerpt",
+        "excerptPlaceholder": "Short summary (optional)",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at"
     },
     "projects": {
         "title": "Projects",

@@ -4,6 +4,8 @@ import { useDark } from '@vueuse/core'
 import FloatingNavbar from './components/FloatingNavbar.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Toaster } from '@/components/ui/sonner'
+import 'vue-sonner/style.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -49,12 +51,14 @@ onUnmounted(() => {
       <main>
         <router-view />
       </main>
-
-    <!-- <footer class="border-t border-border py-8">
-      <div class="container text-center text-sm text-muted-foreground">
-        © 2026. Built with FastAPI, Vue 3, Tailwind CSS and shadcn/vue.
-      </div>
-    </footer> -->
+      
+      <!-- <footer class="border-t border-border py-8">
+        <div class="container text-center text-sm text-muted-foreground">
+          © 2026. Built with FastAPI, Vue 3, Tailwind CSS and shadcn/vue.
+        </div>
+      </footer> -->
     </div>
+    
+    <Toaster position="top-center" />
   </div>
 </template>

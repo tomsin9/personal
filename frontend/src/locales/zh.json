@@ -2,12 +2,17 @@
     "system": {
         "toggleTheme": "切換主題",
         "viewProjects": "查看專案",
+        "aboutMe": "關於我",
         "contactMe": "聯絡我",
         "switchToZH": "切換至中文",
         "switchToEN": "切換至英文",
         "lightMode": "日間模式",
         "darkMode": "夜間模式",
-        "backToHome": "返回首頁"
+        "backToHome": "返回首頁",
+        "logout": "登出",
+        "save": "儲存",
+        "saving": "儲存中...",
+        "cancel": "取消"
     },
     "navbar": {
         "home": "首頁",
@@ -21,6 +26,21 @@
         "previous": "上一頁",
         "next": "下一頁",
         "more": "更多"
+    },
+    "auth": {
+        "adminLogin": "管理員登入",
+        "username": "用戶名稱",
+        "password": "密碼",
+        "loggingIn": "登入中...",
+        "login": "登入",
+        "loginSuccess": "歡迎回來",
+        "loginSuccessDescription": "你已經成功登入。",
+        "loginFailed": "登入失敗",
+        "loginFailedDescription": "請稍後再試。",
+        "incorrectUsernameOrPassword": "用戶名稱或密碼不正確",
+        "logoutSuccess": "登出成功",
+        "logoutSuccessDescription": "你已經成功登出。",
+        "pleaseLogInAgain": "登入已過期，請重新登入。"
     },
     "about": {
         "title": "關於我"
@@ -36,7 +56,16 @@
         "recentPosts": "近期文章",
         "readMore": "閱讀更多",
         "viewAllPosts": "查看所有文章",
-        "noPosts": "暫無文章。敬請期待！"
+        "noPosts": "暫無文章。敬請期待！",
+        "editPost": "編輯文章",
+        "draft": "草稿",
+        "addTag": "新增標籤",
+        "published": "已發布",
+        "titlePlaceholder": "文章標題",
+        "excerpt": "摘要",
+        "excerptPlaceholder": "簡短摘要（選填）",
+        "createdAt": "建立於",
+        "updatedAt": "更新於"
     },
     "projects": {
         "title": "專案",

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/item'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ExternalLink, Github, ChevronDown, ChevronUp, Code } from 'lucide-vue-next'
 
 import type { Project } from '@/types/project'
@@ -72,7 +73,35 @@ onMounted(() => {
       </router-link> -->
     </div>
 
-    <ItemGroup class="space-y-4">
+    <template v-if="isLoading">
+      <ItemGroup class="space-y-4">
+        <Item
+          v-for="i in displayedProjects.length"
+          :key="i"
+          variant="outline"
+          class="p-4 bg-card border border-zinc-500/20"
+        >
+          <div class="w-full flex items-start md:items-center gap-4">
+            <Skeleton class="size-20 md:w-32 md:h-20 shrink-0 rounded-md" />
+            <div class="min-w-0 flex-1 space-y-2">
+              <div class="flex flex-wrap gap-2">
+                <Skeleton class="h-6 w-32" />
+                <Skeleton class="h-5 w-12" />
+                <Skeleton class="h-5 w-16" />
+              </div>
+              <Skeleton class="h-4 w-full" />
+              <Skeleton class="h-4 w-full" />
+              <Skeleton class="h-4 w-3/4" />
+              <div class="flex gap-4 pt-2">
+                <Skeleton class="h-3 w-16" />
+                <Skeleton class="h-3 w-20" />
+              </div>
+            </div>
+          </div>
+        </Item>
+      </ItemGroup>
+    </template>
+    <ItemGroup v-else class="space-y-4">
       <Item
         v-for="project in displayedProjects"
         :key="project.id"
@@ -119,7 +148,7 @@ onMounted(() => {
       </Item>
     </ItemGroup>
 
-    <div v-if="projects.length > 3" class="mt-10 flex justify-center">
+    <div v-if="!isLoading && projects.length > 3" class="mt-10 flex justify-center">
       <Button 
         variant="ghost" 
         @click="toggleExpand"

@@ -4,7 +4,8 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDark, useToggle } from '@vueuse/core'
-import { Home, Briefcase, BookOpen, Mail, Sun, Moon } from 'lucide-vue-next'
+import { Home, Briefcase, BookOpen, Mail, Sun, Moon, LogOut } from 'lucide-vue-next'
+import { auth } from '@/store/auth'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
@@ -193,6 +194,24 @@ onUnmounted(() => {
           </TooltipTrigger>
           <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">
             {{ isDark ? t('system.lightMode') : t('system.darkMode') }}
+          </TooltipContent>
+        </Tooltip>
+
+        <div v-if="auth.isAdmin" class="mx-1 w-px self-stretch bg-border" aria-hidden />
+
+        <Tooltip v-if="auth.isAdmin" ignore-non-keyboard-focus>
+          <TooltipTrigger as-child @focus.stop @pointerdown.prevent>
+            <Button
+              variant="ghost"
+              size="icon"
+              class="size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10"
+              @click="auth.logout()"
+            >
+              <LogOut class="size-[1.125rem] sm:size-5" :stroke-width="1.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">
+            {{ t('system.logout') }}
           </TooltipContent>
         </Tooltip>
       </div>

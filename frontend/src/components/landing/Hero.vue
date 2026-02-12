@@ -19,8 +19,8 @@ function scrollToProjects() {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function scrollToContact() {
-  const el = document.getElementById('contact')
+function scrollToAbout() {
+  const el = document.getElementById('about')
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
@@ -50,8 +50,8 @@ function scrollToContact() {
             <ArrowRight class="ml-2 h-4 w-4" />
           </Button>
 
-          <Button size="lg" variant="outline" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#contact" @click.prevent="scrollToContact">
-            {{ t('system.contactMe') }}
+          <Button size="lg" variant="outline" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#about" @click.prevent="scrollToAbout">
+            {{ t('system.aboutMe') }}
           </Button>
 
           <!-- <div class="flex flex-row gap-2">
