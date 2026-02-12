@@ -22,7 +22,7 @@ export const siteConfig = {
     socials: {
         github: "https://github.com/tomsin9/",
         linkedin: "https://linkedin.com/in/tom-sin/",
-        instagram: "https://instagram.com/sin9_",
+        instagram: "https://instagram.com/sinp9_",
         email: "mailto:contact@tomsinp.com"
     },
     personal: {
