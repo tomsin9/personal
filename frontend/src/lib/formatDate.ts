@@ -41,10 +41,11 @@ function parseAsUtcIfNeeded(isoDate: string): Date {
  * @returns Formatted date string, or original string if invalid
  */
 export function formatDate(
-  isoDate: string,
+  isoDate: string | undefined,
   locale?: string,
   style: DateFormatStyle = 'medium'
 ): string {
+  if (isoDate == null || isoDate === '') return ''
   const d = parseAsUtcIfNeeded(isoDate)
   if (Number.isNaN(d.getTime())) return isoDate
 
@@ -63,7 +64,8 @@ export function formatDate(
  * Format an ISO date-time for display with time (AM/PM or 上午/下午).
  * Chinese uses 上午/下午; English uses British format (en-GB) with AM/PM.
  */
-export function formatDateTime(isoDate: string, locale?: string): string {
+export function formatDateTime(isoDate: string | undefined, locale?: string): string {
+  if (isoDate == null || isoDate === '') return ''
   const d = parseAsUtcIfNeeded(isoDate)
   if (Number.isNaN(d.getTime())) return isoDate
 
