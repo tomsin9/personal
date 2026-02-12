@@ -6,6 +6,10 @@ declare module "*.vue" {
   export default component
 }
 
+declare module '@/store/auth';
+declare module '@/i18n';
+declare module './i18n';
+
 interface ImportMetaEnv {
   readonly VITE_API_URL?: string
   readonly VITE_GA_MEASUREMENT_ID?: string
