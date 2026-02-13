@@ -9,7 +9,7 @@
         "lightMode": "Light Mode",
         "darkMode": "Dark Mode",
         "backToHome": "Back to Home",
-        "logout": "Log out",
+        "logout": "Logout",
         "save": "Save",
         "saving": "Saving...",
         "cancel": "Cancel",
@@ -48,11 +48,22 @@
     "about": {
         "title": "About Me"
     },
+    "skills": {
+        "title": "Tech Stack",
+        "description": "Core technologies and tools I use to build scalable solutions.",
+        "groups": {
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "devops": "DevOps",
+            "aiWorkflow": "AI & Workflow",
+            "design": "Design"
+        }
+    },
     "blog": {
         "title": "Blog",
-        "description": "Latest technical insights and project updates.",
+        "description": "Technical logs, project notes, and personal reflections.",
         "sectionTitle": "Posts",
-        "sectionDescription": "Latest technical insights and project updates.",
+        "sectionDescription": "Technical logs, project notes, and personal reflections.",
         "author": "Author",
         "date": "Date",
         "content": "Content",
@@ -82,7 +93,7 @@
     },
     "projects": {
         "title": "Projects",
-        "description": "A collection of projects I've worked on recently.",
+        "description": "A collection of my works, from professional systems to personal experiments.",
         "viewAllProjects": "View All Projects",
         "liveDemo": "Live Demo",
         "link": "Link",
@@ -90,8 +101,8 @@
         "showLess": "Show Less"
     },
     "contact": {
-        "title": "Let's Connect",
-        "description": "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.",
+        "title": "Get in Touch",
+        "description": "Always open to interesting projects and meaningful collaborations.",
         "email": "Email",
         "github": "GitHub",
         "linkedin": "LinkedIn",

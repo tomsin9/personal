@@ -48,11 +48,22 @@
     "about": {
         "title": "關於我"
     },
+    "skills": {
+        "title": "技術棧",
+        "description": "我用來構建可擴展解決方案的核心技術與工具。",
+        "groups": {
+            "frontend": "前端",
+            "backend": "後端",
+            "devops": "DevOps",
+            "aiWorkflow": "AI & 工作流程",
+            "design": "設計"
+        }
+    },
     "blog": {
         "title": "網誌",
-        "description": "最新技術洞察和項目更新。",
+        "description": "技術日誌、項目筆記與個人隨筆。",
         "sectionTitle": "文章",
-        "sectionDescription": "最新技術洞察和項目更新。",
+        "sectionDescription": "技術日誌、項目筆記與個人隨筆。",
         "author": "作者",
         "date": "日期",
         "content": "內容",
@@ -71,7 +82,7 @@
         "deletePostSuccess": "文章已成功刪除。",
         "draft": "草稿",
         "addTag": "新增標籤",
-        "published": "已發布",
+        "published": "已發佈",
         "titlePlaceholder": "文章標題",
         "titleRequired": "請填寫標題。",
         "contentRequired": "請填寫內容。",
@@ -82,7 +93,7 @@
     },
     "projects": {
         "title": "專案",
-        "description": "我最近參與的一些專案項目。",
+        "description": "專案項目展示，涵蓋了從商業系統到個人實驗項目的實踐。",
         "viewAllProjects": "查看所有專案",
         "liveDemo": "即時演示",
         "link": "連結",
@@ -90,8 +101,8 @@
         "showLess": "顯示更少"
     },
     "contact": {
-        "title": "聯絡我",
-        "description": "我隨時準備與你討論新專案、創意想法或機會，成為你視野的一部分。",
+        "title": "與我聯繫",
+        "description": "隨時歡迎有趣的項目合作、創意構思或技術交流。",
         "email": "電郵",
         "github": "GitHub",
         "linkedin": "LinkedIn",

@@ -3,6 +3,7 @@ import type { Component } from 'vue'
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { LOCALE_STORAGE_KEY } from '@/i18n'
 import { useDark, useToggle } from '@vueuse/core'
 import { Home, Briefcase, BookOpen, Mail, Sun, Moon, LogOut } from 'lucide-vue-next'
 import { auth } from '@/store/auth'
@@ -92,7 +93,11 @@ async function handleNavClick(e: Event, item: FloatingNavItem) {
 }
 
 function toggleLocale() {
-  locale.value = locale.value === 'en' ? 'zh' : 'en'
+  const next = locale.value === 'en' ? 'zh' : 'en'
+  locale.value = next
+  try {
+    localStorage.setItem(LOCALE_STORAGE_KEY, next)
+  } catch (_) {}
 }
 
 function isRouteActive(item: FloatingNavItem) {

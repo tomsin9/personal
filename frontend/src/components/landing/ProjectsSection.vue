@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { apiBaseUrl } from '@/config/site'
 import { useI18n } from 'vue-i18n'
@@ -15,14 +15,20 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ExternalLink, Github, ChevronDown, ChevronUp, Code } from 'lucide-vue-next'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import type { Project } from '@/types/project'
 
 const { t } = useI18n()
 
+gsap.registerPlugin(ScrollTrigger)
+
 const projects = ref<Project[]>([])
 const isLoading = ref(true)
 const isExpanded = ref(false)
+const projectsSectionRef = ref<HTMLElement | null>(null)
+let scrollTriggerDone = false
 
 const fetchProjects = async () => {
   try {
@@ -42,12 +48,43 @@ const displayedProjects = computed(() => {
 
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value
-
-  // if (!isExpanded.value) {
-  //   const el = document.getElementById('projects-title')
-  //   el?.scrollIntoView({ behavior: 'smooth' })
-  // }
 }
+
+const setupProjectsAnimation = () => {
+  if (!projectsSectionRef.value || scrollTriggerDone) return
+  const header = projectsSectionRef.value.querySelector('.projects-section-header')
+  const items = projectsSectionRef.value.querySelectorAll('.project-item')
+  if (!header || !items.length) return
+  scrollTriggerDone = true
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: projectsSectionRef.value,
+      start: 'top 85%',
+      toggleActions: 'play none none none'
+    }
+  })
+  tl.from(header, {
+    opacity: 0,
+    y: 12,
+    duration: 0.45,
+    ease: 'power2.out'
+  })
+  tl.from(items, {
+    opacity: 0,
+    y: 14,
+    scale: 0.96,
+    duration: 0.5,
+    stagger: { amount: 0.55, from: 'start', ease: 'power2.out' },
+    ease: 'power2.out'
+  }, '-=0.12')
+}
+
+watch([isLoading, displayedProjects], () => {
+  if (!isLoading.value && displayedProjects.value.length > 0) {
+    nextTick(() => setupProjectsAnimation())
+  }
+}, { flush: 'post' })
 
 onMounted(() => {
   fetchProjects()
@@ -56,12 +93,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="projects" class="container py-20 px-4 md:px-8">
-    <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
+  <section ref="projectsSectionRef" id="projects" class="container py-20 px-4 md:px-8">
+    <div class="projects-section-header flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
-        <h2 id="projects-title" class="text-3xl font-bold tracking-tight">
+        <h2 id="projects-title" class="text-3xl font-bold tracking-tight mb-4">
           {{ t('projects.title') }}
         </h2>
+        <!-- <div class="h-[3px] w-16 bg-destructive rounded-full mb-4"></div> -->
         <p class="text-muted-foreground">
           {{ t('projects.description') }}
         </p>
@@ -106,7 +144,7 @@ onMounted(() => {
         v-for="project in displayedProjects"
         :key="project.id"
         variant="outline"
-        class="group p-4 transition-colors bg-card border hover:border-zinc-500/50"
+        class="project-item group p-4 transition-colors bg-card border hover:border-zinc-500/50"
       >
         <div class="w-full flex items-start md:items-center gap-4">
           <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border flex items-center justify-center">
@@ -116,7 +154,7 @@ onMounted(() => {
               :alt="project.title"
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             >
-            <Code v-else class="size-6 text-muted-foreground dark:text-muted" />
+            <Code v-else class="size-6 text-primary/20" />
           </ItemMedia>
 
           <ItemContent class="min-w-0 flex-1">

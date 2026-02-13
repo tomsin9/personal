@@ -17,16 +17,17 @@ def read_posts(
         session: Session = Depends(get_session),
         current_user: str | None = Depends(get_current_user_optional),
         page: int = Query(1, ge=1),      # Which page, default 1
-        size: int = Query(12, ge=1, le=100) # How many records per page, default 12
+        size: int = Query(12, ge=1, le=100),  # How many records per page, default 12
+        published_only: bool = Query(False, description="When true, return only published posts (e.g. for landing)")
     ):
-    # 1. Anonymous only sees published posts; admin sees all
+    # 1. published_only 或未登入：只顯示已發表；登入且唔要 published_only：顯示全部
     list_statement = select(Blog).order_by(Blog.created_at.desc())
-    if not current_user:
+    if published_only or not current_user:
         list_statement = list_statement.where(Blog.is_published == True)
 
     # 2. Total count for pagination (same filter)
     total_statement = select(func.count()).select_from(Blog)
-    if not current_user:
+    if published_only or not current_user:
         total_statement = total_statement.where(Blog.is_published == True)
     total = session.exec(total_statement).one()
 

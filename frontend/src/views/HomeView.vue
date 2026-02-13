@@ -3,10 +3,10 @@ import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Hero from '../components/landing/Hero.vue'
 import AboutSection from '../components/landing/AboutSection.vue'
+import SkillsSection from '../components/landing/SkillSection.vue'
 import BlogSection from '../components/landing/BlogSection.vue'
 import ProjectsSection from '../components/landing/ProjectsSection.vue'
 import ContactSection from '../components/landing/ContactSection.vue'
-
 const route = useRoute()
 
 onMounted(() => {
@@ -23,6 +23,7 @@ onMounted(() => {
 <template>
   <Hero />
   <AboutSection />
+  <SkillsSection />
   <BlogSection />
   <ProjectsSection />
   <ContactSection />

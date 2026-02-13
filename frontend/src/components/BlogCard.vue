@@ -17,9 +17,14 @@ const { t, locale } = useI18n()
   <Card class="flex flex-col h-full justify-between transition-all hover:border-zinc-500/50">
     <CardHeader>
       <div class="flex justify-between items-start mb-2">
-        <span v-if="post.tags && post.tags.length > 0" class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 bg-secondary text-secondary-foreground rounded">
-          {{ post.tags[0] }}
-        </span>
+        <div v-if="post.tags && post.tags.length > 0 || post.is_published === false" class="flex items-center gap-2">
+          <span v-if="post.tags && post.tags.length > 0" class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 bg-secondary text-secondary-foreground rounded">
+            {{ post.tags[0] }}
+          </span>
+          <span v-if="post.is_published === false" class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 border border-amber-500 text-amber-600 dark:text-amber-400 rounded">
+            {{ t('blog.draft') }}
+          </span>
+        </div>
         <time class="text-xs text-muted-foreground" :datetime="post.created_at">
           {{ formatDate(post.created_at, locale) }}
         </time>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
@@ -7,20 +7,26 @@ import { auth } from '@/store/auth'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import BlogCard from '@/components/BlogCard.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import type { Post } from '@/types/blog'
 
 const { t, locale } = useI18n()
 
+gsap.registerPlugin(ScrollTrigger)
+
 const latestPosts = ref<Post[]>([])
 const isLoading = ref(true)
+const blogSectionRef = ref<HTMLElement | null>(null)
+let scrollTriggerDone = false
 
 const fetchPosts = async () => {
   try {
     isLoading.value = true
     const headers = auth.token ? { Authorization: `Bearer ${auth.token}` } : {}
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
-      params: { page: 1, size: 2 },
+      params: { page: 1, size: 2, published_only: true },
       headers
     })
     latestPosts.value = response.data?.items || []
@@ -31,18 +37,53 @@ const fetchPosts = async () => {
   }
 }
 
+const setupBlogAnimation = () => {
+  if (!blogSectionRef.value || scrollTriggerDone) return
+  const header = blogSectionRef.value.querySelector('.blog-section-header')
+  const cards = blogSectionRef.value.querySelectorAll('.blog-post-card')
+  if (!header || !cards.length) return
+  scrollTriggerDone = true
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: blogSectionRef.value,
+      start: 'top 85%',
+      toggleActions: 'play none none none'
+    }
+  })
+  tl.from(header, {
+    opacity: 0,
+    y: 12,
+    duration: 0.45,
+    ease: 'power2.out'
+  })
+  tl.from(cards, {
+    opacity: 0,
+    y: 14,
+    scale: 0.96,
+    duration: 0.5,
+    stagger: { amount: 0.5, from: 'start', ease: 'power2.out' },
+    ease: 'power2.out'
+  }, '-=0.12')
+}
+
+watch(() => latestPosts.value.length, (len) => {
+  if (len > 0) nextTick(() => setupBlogAnimation())
+})
+
 onMounted(() => {
   fetchPosts()
 })
 </script>
 
 <template>
-  <section id="blog" class="container py-20 px-4 md:px-8">
-    <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
+  <section ref="blogSectionRef" id="blog" class="container py-20 px-4 md:px-8">
+    <div class="blog-section-header flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
-        <h2 class="text-3xl font-bold tracking-tight">
+        <h2 class="text-3xl font-bold tracking-tight mb-4">
           {{ t('blog.recentPosts') }}
         </h2>
+        <!-- <div class="h-[3px] w-16 bg-destructive rounded-full mb-4"></div> -->
         <p class="text-muted-foreground">
           {{ t('blog.sectionDescription') }}
         </p>
@@ -72,7 +113,7 @@ onMounted(() => {
         v-for="post in latestPosts" 
         :key="post.id" 
         :to="{ name: 'post-detail', params: { id: post.id } }"
-        class="block"
+        class="blog-post-card block"
       >
         <BlogCard :post="post" />
       </router-link>
