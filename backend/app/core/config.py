@@ -17,7 +17,10 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "your-long-random-hex-string" 
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
-    
+
+    # Cloudflare Turnstile (optional). If set, login requires valid X-Turnstile-Token.
+    TURNSTILE_SECRETKEY: str = ""
+
     # Comma-separated; dev (Vite :5173) + prod (e.g. nginx :80 on localhost)
     ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost,http://127.0.0.1"
     

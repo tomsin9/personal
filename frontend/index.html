@@ -37,6 +37,9 @@
     <meta name="twitter:image" content="<%- ogImage %>">
     <meta name="twitter:description" content="<%- description %>">
 
+    <!-- Cloudflare Turnstile: preconnect only; script loaded when login view mounts (implicit) -->
+    <link rel="preconnect" href="https://challenges.cloudflare.com">
+
   </head>
   <body>
     <div id="app"></div>

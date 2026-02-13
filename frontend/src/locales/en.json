@@ -38,6 +38,8 @@
         "loginFailed": "Login Failed",
         "loginFailedDescription": "Please try again.",
         "incorrectUsernameOrPassword": "Incorrect username or password",
+        "verificationRequired": "Verification required",
+        "completeVerification": "Please complete the verification above before logging in.",
         "logoutSuccess": "Logged out",
         "logoutSuccessDescription": "You have been logged out successfully.",
         "pleaseLogInAgain": "Session expired. Please log in again."

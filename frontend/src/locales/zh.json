@@ -38,6 +38,8 @@
         "loginFailed": "登入失敗",
         "loginFailedDescription": "請稍後再試。",
         "incorrectUsernameOrPassword": "用戶名稱或密碼不正確",
+        "verificationRequired": "需要完成驗證",
+        "completeVerification": "請先完成上方驗證再登入。",
         "logoutSuccess": "登出成功",
         "logoutSuccessDescription": "你已經成功登出。",
         "pleaseLogInAgain": "登入已過期，請重新登入。"
