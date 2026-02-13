@@ -17,18 +17,21 @@ export function initGoogleAnalytics(): void {
     return
   }
 
-  window.dataLayer = window.dataLayer || []
-  function gtag(...args: unknown[]): void {
-    window.dataLayer!.push(args)
-  }
-  window.gtag = gtag
-  gtag('js', new Date())
-  gtag('config', gaId)
+  // 1. Async script – load gtag.js
+  const loadScript = document.createElement('script')
+  loadScript.async = true
+  loadScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
+  document.head.appendChild(loadScript)
 
-  const script = document.createElement('script')
-  script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
-  document.head.appendChild(script)
+  // 2. Inline script – dataLayer + gtag + config
+  const inlineScript = document.createElement('script')
+  inlineScript.textContent = [
+    'window.dataLayer = window.dataLayer || [];',
+    'function gtag(){dataLayer.push(arguments);}',
+    'gtag("js", new Date());',
+    `gtag("config", "${gaId.replace(/"/g, '\\"')}");`,
+  ].join('\n')
+  document.head.appendChild(inlineScript)
 }
 
 function getGaId(): string | undefined {

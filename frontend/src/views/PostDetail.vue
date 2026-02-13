@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue'
-import { apiBaseUrl } from '@/config/site'
+import { ref, onMounted, reactive, computed, watch } from 'vue'
+import { apiBaseUrl, siteConfig } from '@/config/site'
 import axios from 'axios'
 import { marked } from 'marked'
 import { useI18n } from 'vue-i18n'
@@ -58,6 +58,15 @@ const editForm = reactive({
   tags: [] as string[],
   is_published: false
 })
+
+// Dynamic page title: "post.title - Blog/網誌 · SiteTitle"; update when post or locale changes
+watch(
+  [post, () => locale.value],
+  ([p]) => {
+    if (p?.title) document.title = `${p.title} | ${siteConfig.siteTitle}`
+  },
+  { immediate: true }
+)
 
 onMounted(async () => {
   loadError.value = null
