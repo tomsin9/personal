@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
+import { auth } from '@/store/auth'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import BlogCard from '@/components/BlogCard.vue'
@@ -17,11 +18,10 @@ const isLoading = ref(true)
 const fetchPosts = async () => {
   try {
     isLoading.value = true
+    const headers = auth.token ? { Authorization: `Bearer ${auth.token}` } : {}
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
-      params: { 
-        page: 1,
-        size: 2
-      }
+      params: { page: 1, size: 2 },
+      headers
     })
     latestPosts.value = response.data?.items || []
   } catch (error) {

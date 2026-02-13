@@ -1,8 +1,7 @@
 /**
- * Google Analytics 4 – loads gtag in-app when VITE_GA_MEASUREMENT_ID is set.
+ * Initialize Google Analytics
+ * Loads the gtag.js script and configures it with the tracking ID from environment variables
  */
-
-const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined
 
 declare global {
   interface Window {
@@ -11,29 +10,41 @@ declare global {
   }
 }
 
-/** Same as Google’s gtag snippet: dataLayer + gtag stub, then 'js' + 'config', then load gtag.js. */
 export function initGoogleAnalytics(): void {
-  if (!GA_ID || typeof GA_ID !== 'string' || GA_ID.trim() === '') return
+  const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined
+
+  if (!gaId || gaId === 'none' || gaId === 'None' || gaId === 'NONE' || gaId === 'undefined' || gaId.trim() === '') {
+    return
+  }
 
   window.dataLayer = window.dataLayer || []
-  window.gtag = function gtag() {
-    window.dataLayer!.push(arguments)
+  function gtag(...args: unknown[]): void {
+    window.dataLayer!.push(args)
   }
-  window.gtag('js', new Date())
-  window.gtag('config', GA_ID)
+  window.gtag = gtag
+  gtag('js', new Date())
+  gtag('config', gaId)
 
   const script = document.createElement('script')
   script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
   document.head.appendChild(script)
 }
 
+function getGaId(): string | undefined {
+  const id = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined
+  if (!id || id === 'none' || id === 'None' || id === 'NONE' || id === 'undefined' || id.trim() === '') return undefined
+  return id
+}
+
 export function trackPageView(path: string): void {
-  if (!GA_ID || typeof window.gtag !== 'function') return
-  window.gtag('config', GA_ID, { page_path: path })
+  const gaId = getGaId()
+  if (!gaId || typeof window.gtag !== 'function') return
+  window.gtag('config', gaId, { page_path: path })
 }
 
 export function trackEvent(eventName: string, params?: Record<string, unknown>): void {
-  if (!GA_ID || typeof window.gtag !== 'function') return
+  const gaId = getGaId()
+  if (!gaId || typeof window.gtag !== 'function') return
   window.gtag('event', eventName, params)
 }

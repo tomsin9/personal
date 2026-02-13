@@ -5,13 +5,16 @@ import AdminLogin from '../views/AdminLogin.vue'
 import BlogView from '../views/BlogView.vue'
 import PostDetail from '../views/PostDetail.vue'
 import PostCreate from '../views/PostCreate.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
     { path: '/', name: 'home', component: HomeView },
     { path: '/secret/login', name: 'admin-login', component: AdminLogin },
     { path: '/blog', name: 'post-list', component: BlogView },
     { path: '/blog/post/new', name: 'post-create', component: PostCreate },
-    { path: '/blog/post/:id', name: 'post-detail', component: PostDetail, props: true }
+    { path: '/blog/post/:id', name: 'post-detail', component: PostDetail, props: true },
+    { path: '/404', name: 'not-found', component: NotFound },
+    { path: '/:pathMatch(.*)*', name: 'catch-all', redirect: '/404' }
 ]
 
 const router = createRouter({

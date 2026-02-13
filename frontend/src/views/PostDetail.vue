@@ -66,9 +66,11 @@ onMounted(async () => {
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/${props.id}`, { headers })
     post.value = response.data
   } catch (err) {
-    loadError.value = axios.isAxiosError(err) && err.response?.status === 404
-      ? t('blog.postNotFound')
-      : 'Failed to load post'
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
+      await router.replace('/404')
+      return
+    }
+    loadError.value = 'Failed to load post'
   }
 })
 

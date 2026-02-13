@@ -12,7 +12,8 @@
         "logout": "Log out",
         "save": "Save",
         "saving": "Saving...",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "pageNotFound": "Page not found."
     },
     "navbar": {
         "home": "Home",
@@ -95,5 +96,12 @@
         "github": "GitHub",
         "linkedin": "LinkedIn",
         "instagram": "Instagram"
+    },
+    "errors": {
+        "notFound": {
+            "title": "Page not found",
+            "message": "The page you're looking for doesn't exist or has been moved."
+        },
+        "goBack": "Go back"
     }
 }

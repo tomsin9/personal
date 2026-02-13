@@ -38,11 +38,10 @@ const currentPage = ref(Number(route.query.page) || 1)
 const fetchPosts = async () => {
   isLoading.value = true
   try {
+    const headers = auth.token ? { Authorization: `Bearer ${auth.token}` } : {}
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
-      params: {
-        page: currentPage.value,
-        size: postsPerPage
-      }
+      params: { page: currentPage.value, size: postsPerPage },
+      headers
     })
     // now we need to get response.data.items and response.data.total
     posts.value = response.data?.items || []

@@ -10,25 +10,30 @@ from app.models.blog import Blog
 
 router = APIRouter()
 
-# Read all Blog Posts
+# Read all Blog Posts (only published for anonymous; admin sees all including drafts)
 @router.get("/", response_model=Dict[str, Any])
 def read_posts(
         *,
         session: Session = Depends(get_session),
+        current_user: str | None = Depends(get_current_user_optional),
         page: int = Query(1, ge=1),      # Which page, default 1
         size: int = Query(12, ge=1, le=100) # How many records per page, default 12
     ):
-    # 1. Calculate OFFSET (skip how many records)
-    # For example, page=2, size=6, offset = (2-1)*6 = 6
-    offset = (page - 1) * size
+    # 1. Anonymous only sees published posts; admin sees all
+    list_statement = select(Blog).order_by(Blog.created_at.desc())
+    if not current_user:
+        list_statement = list_statement.where(Blog.is_published == True)
 
-    # 2. Query the data for the current page
-    statement = select(Blog).order_by(Blog.created_at.desc()).offset(offset).limit(size)
-    results = session.exec(statement).all()
-
-    # 3. Query the total number (used for Pagination UI)
+    # 2. Total count for pagination (same filter)
     total_statement = select(func.count()).select_from(Blog)
+    if not current_user:
+        total_statement = total_statement.where(Blog.is_published == True)
     total = session.exec(total_statement).one()
+
+    # 3. Current page of items
+    offset = (page - 1) * size
+    list_statement = list_statement.offset(offset).limit(size)
+    results = session.exec(list_statement).all()
 
     return {
         "items": results,
