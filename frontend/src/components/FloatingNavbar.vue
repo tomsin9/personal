@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { LOCALE_STORAGE_KEY } from '@/i18n'
 import { useDark, useToggle } from '@vueuse/core'
-import { Home, Briefcase, BookOpen, Mail, Sun, Moon, LogOut } from 'lucide-vue-next'
+import { Home, Briefcase, BookOpen, Mail, Sun, Moon, LogOut, SunSnow } from 'lucide-vue-next'
 import { auth } from '@/store/auth'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -92,6 +92,13 @@ async function handleNavClick(e: Event, item: FloatingNavItem) {
   }
 }
 
+const toggleSeason = inject<() => void>('toggleSeason', () => {})
+const seasonsEffectOn = inject<import('vue').Ref<boolean>>('seasonsEffectOn', ref(true))
+
+function onToggleSeason() {
+  toggleSeason()
+}
+
 function toggleLocale() {
   const next = locale.value === 'en' ? 'zh' : 'en'
   locale.value = next
@@ -102,8 +109,12 @@ function toggleLocale() {
 
 function isRouteActive(item: FloatingNavItem) {
   if (item.href.includes('#')) {
-    // Hash sections (e.g. #projects, #contact) only active when on home page
+    // Hash sections (e.g. #projects, #contact) only active when on home page with that hash
     return route.path === '/' && currentHash.value === (item.section ?? getHashFromHref(item.href))
+  }
+  // Home is only active when on / with no hash (so projects/contact don't also highlight home)
+  if (item.href === '/') {
+    return route.path === '/' && !currentHash.value
   }
   return route.path === item.href
 }
@@ -145,23 +156,19 @@ onUnmounted(() => {
         <template v-for="(item, index) in navItems" :key="index">
           <Tooltip>
             <TooltipTrigger as-child>
-              <component
-                :is="item.href.includes('#') ? 'a' : RouterLink"
-                :to="item.href.includes('#') ? undefined : item.href"
-                :href="item.href"
-                @click="handleNavClick($event, item)"
+              <Button
+                variant="ghost"
+                size="icon"
                 :class="cn(
-                  'inline-flex size-9 shrink-0 items-center justify-center gap-2 rounded-full px-2 transition-all duration-200 hover:scale-110 sm:size-10',
-                  'lg:size-auto lg:min-h-10 lg:py-2 lg:px-3',
-                  'text-foreground hover:bg-accent hover:text-accent-foreground',
+                  'size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10',
                   isRouteActive(item) && 'text-primary bg-accent/50'
                 )"
+                @click="item.href.includes('#') ? handleNavClick($event, item) : router.push(item.href)"
               >
                 <component :is="item.icon" class="size-[1.125rem] shrink-0 sm:size-5" :stroke-width="1.5" />
-                <span class="hidden text-sm font-medium lg:inline">{{ t(item.label) }}</span>
-              </component>
+              </Button>
             </TooltipTrigger>
-            <TooltipContent side="top" :side-offset="15" class="font-medium text-xs lg:hidden">
+            <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">
               {{ t(item.label) }}
             </TooltipContent>
           </Tooltip>
@@ -181,7 +188,25 @@ onUnmounted(() => {
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">
-            {{ locale === 'en' ? t('system.switchToZH') : t('system.switchToEN') }}
+            {{ t('system.switchLanguage') }}
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip ignore-non-keyboard-focus>
+          <TooltipTrigger as-child @focus.stop @pointerdown.prevent>
+            <Button
+              variant="ghost"
+              size="icon"
+              :class="cn(
+                'size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10'
+              )"
+              @click="onToggleSeason()"
+            >
+              <SunSnow class="size-[1.125rem] sm:size-5" :stroke-width="1.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">
+            {{ t('system.toggleSeason') }}
           </TooltipContent>
         </Tooltip>
 

@@ -20,7 +20,7 @@ const personalInfo = computed(() => siteConfig.personal[locale.value as keyof ty
         <p class="text-muted-foreground" v-html="personalInfo.aboutMe"></p>
       </div>
       <div class="md:col-span-5 lg:col-span-4 pt-10 lg:pt-0">
-        <img :src="siteConfig.aboutMeImage" :alt="siteConfig.author" class="w-full h-full max-w-[250px] object-cover rounded-md mx-auto">
+        <img :src="siteConfig.aboutMeImage" :alt="siteConfig.author" class="w-full h-full max-w-[250px] object-cover rounded-xl mx-auto">
       </div>
     </div>
   </section>

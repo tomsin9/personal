@@ -8,6 +8,8 @@
         "switchToEN": "Switch to English",
         "lightMode": "Light Mode",
         "darkMode": "Dark Mode",
+        "toggleSeason": "Toggle Season",
+        "switchLanguage": "Switch Language",
         "backToHome": "Back to Home",
         "logout": "Logout",
         "save": "Save",

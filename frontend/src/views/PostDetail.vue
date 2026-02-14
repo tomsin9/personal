@@ -301,7 +301,7 @@ const confirmDelete = async () => {
     </div>
 
     <div class="mb-4">
-      <h1 v-if="!isEditing" class="text-2xl md:text-4xl font-bold tracking-tight">{{ post.title }}</h1>
+      <h1 v-if="!isEditing" class="text-3xl md:text-4xl font-bold tracking-tight">{{ post.title }}</h1>
       <input
         v-else
         v-model="editForm.title"

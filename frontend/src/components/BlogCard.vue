@@ -14,7 +14,7 @@ const { t, locale } = useI18n()
 </script>
 
 <template>
-  <Card class="flex flex-col h-full justify-between transition-all hover:border-zinc-500/50">
+  <Card class="flex flex-col h-full justify-between transition-all hover:border-zinc-500/50 bg-card/40 backdrop-blur border-border/60">
     <CardHeader>
       <div class="flex justify-between items-start mb-2">
         <div v-if="post.tags && post.tags.length > 0 || post.is_published === false" class="flex items-center gap-2">

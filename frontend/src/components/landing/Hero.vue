@@ -27,7 +27,7 @@ function scrollToAbout() {
 </script>
 
 <template>
-  <div class="relative w-full py-32 min-h-[100vh] md:min-h-0 lg:min-h-0 xl:min-h-[100vh] flex items-center justify-center overflow-hidden">
+  <div class="relative w-full py-32 min-h-[90vh] md:min-h-0 lg:min-h-0 xl:min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0"></div>
 
     <div class="container relative z-10 mx-auto px-4 md:px-6">
@@ -50,23 +50,11 @@ function scrollToAbout() {
             <ArrowRight class="ml-2 h-4 w-4" />
           </Button>
 
-          <Button size="lg" variant="outline" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#about" @click.prevent="scrollToAbout">
+          <!-- <Button size="lg" variant="outline" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#about" @click.prevent="scrollToAbout">
             {{ t('system.aboutMe') }}
-          </Button>
+          </Button> -->
 
-          <!-- <div class="flex flex-row gap-2">
-            <Button
-              variant="outline"
-              size="icon-lg"
-              aria-label="LinkedIn"
-              class="social-link"
-              data-social="linkedin"
-              @click="openInNewTab(siteConfig.socials.linkedin)"
-            >
-              <Linkedin class="h-4 w-4" />
-              <span class="sr-only">{{ t('system.linkedin') }}</span>
-            </Button>
-
+          <div class="flex flex-row gap-2">
             <Button
               variant="outline"
               size="icon-lg"
@@ -82,13 +70,13 @@ function scrollToAbout() {
             <Button
               variant="outline"
               size="icon-lg"
-              aria-label="Instagram"
+              aria-label="LinkedIn"
               class="social-link"
-              data-social="instagram"
-              @click="openInNewTab(siteConfig.socials.instagram)"
+              data-social="linkedin"
+              @click="openInNewTab(siteConfig.socials.linkedin)"
             >
-              <Instagram class="h-4 w-4" />
-              <span class="sr-only">{{ t('system.instagram') }}</span>
+              <Linkedin class="h-4 w-4" />
+              <span class="sr-only">{{ t('system.linkedin') }}</span>
             </Button>
 
             <Button
@@ -102,7 +90,7 @@ function scrollToAbout() {
               <Mail class="h-4 w-4" />
               <span class="sr-only">{{ t('system.contactMe') }}</span>
             </Button>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

@@ -117,7 +117,7 @@ onMounted(() => {
           v-for="i in displayedProjects.length"
           :key="i"
           variant="outline"
-          class="p-4 bg-card border border-zinc-500/20"
+          class="p-4 bg-card/80 backdrop-blur-md border border-border/80 hover:border-zinc-500/50"
         >
           <div class="w-full flex items-start md:items-center gap-4">
             <Skeleton class="size-20 md:w-32 md:h-20 shrink-0 rounded-md" />
@@ -144,7 +144,7 @@ onMounted(() => {
         v-for="project in displayedProjects"
         :key="project.id"
         variant="outline"
-        class="project-item group p-4 transition-colors bg-card border hover:border-zinc-500/50"
+        class="project-item group rounded-xl p-4 transition-colors bg-card/40 backdrop-blur border border-border/60 hover:border-zinc-500/50"
       >
         <div class="w-full flex items-start md:items-center gap-4">
           <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border flex items-center justify-center">

@@ -92,7 +92,7 @@ onMounted(() => {
               :key="skill"
               class="skill-badge group flex items-center justify-between gap-2" 
             >
-              <Badge variant="secondary" class="text-xs px-2 py-0.5 h-5 whitespace-nowrap font-medium transition-colors">
+              <Badge variant="secondary" class="text-[10px] px-1.5 h-5 whitespace-nowrap transition-colors">
                 {{ skill }}
               </Badge>
             </li>
