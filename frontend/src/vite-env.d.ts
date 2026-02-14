@@ -9,6 +9,7 @@ declare module "*.vue" {
 declare module '@/store/auth';
 declare module '@/i18n';
 declare module './i18n';
+declare module 'vue-seasons-falling';
 
 interface ImportMetaEnv {
   readonly VITE_API_URL?: string
