@@ -93,7 +93,7 @@ async function handleNavClick(e: Event, item: FloatingNavItem) {
 }
 
 const toggleSeason = inject<() => void>('toggleSeason', () => {})
-const seasonsEffectOn = inject<import('vue').Ref<boolean>>('seasonsEffectOn', ref(true))
+const seasonsEffectOn = inject<import('vue').Ref<boolean>>('seasonsEffectOn', ref(false))
 
 function onToggleSeason() {
   toggleSeason()
@@ -145,7 +145,7 @@ onUnmounted(() => {
   <TooltipProvider :delay-duration="200" :skip-delay-duration="0">
     <nav
       aria-label="Floating navigation"
-      class="floating-navbar fixed bottom-6 left-1/2 z-50 -translate-x-1/2"
+      class="floating-navbar fixed bottom-4 lg:bottom-6 left-1/2 z-50 -translate-x-1/2"
     >
       <div
         :class="cn(
@@ -184,7 +184,7 @@ onUnmounted(() => {
               class="size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10"
               @click="toggleLocale()"
             >
-              <span class="text-xs font-medium sm:text-sm">{{ locale === 'en' ? '中' : 'EN' }}</span>
+              <span class="text-xs font-medium">{{ locale === 'en' ? '中' : 'EN' }}</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" :side-offset="15" class="font-medium text-xs">

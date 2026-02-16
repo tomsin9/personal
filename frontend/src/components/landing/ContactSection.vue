@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Github, Linkedin, Mail, Instagram } from 'lucide-vue-next'
+import { Github, Linkedin, Mail, Instagram, Image as ImageIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { siteConfig } from '@/config/site'
@@ -18,14 +18,14 @@ const iconMap = {
     email: Mail,
     github: Github,
     linkedin: Linkedin,
-    instagram: Instagram,
+    instagram: Instagram
 } as const
 
 const labelMap: Record<keyof typeof iconMap, string> = {
     email: 'Email',
     github: 'GitHub',
     linkedin: 'LinkedIn',
-    instagram: 'Instagram',
+    instagram: 'Instagram'
 }
 
 const socialMedia = (Object.entries(siteConfig.socials) as [keyof typeof siteConfig.socials, string][]).map(([key, url]) => ({
@@ -34,6 +34,23 @@ const socialMedia = (Object.entries(siteConfig.socials) as [keyof typeof siteCon
   icon: iconMap[key],
   url,
 }))
+
+const socialGroups = computed(() => [
+  {
+    title: t('contact.devTitle'),
+    items: [
+      { key: 'github', name: t('contact.github'), icon: Github, url: siteConfig.socials.github },
+      { key: 'linkedin', name: t('contact.linkedin'), icon: Linkedin, url: siteConfig.socials.linkedin },
+      { key: 'email', name: t('contact.email'), icon: Mail, url: siteConfig.socials.email },
+    ]
+  },
+  {
+    title: t('contact.photoTitle'),
+    items: [
+      { key: 'instagram', name: t('contact.instagram'), icon: Instagram, url: siteConfig.socials.instagram }
+    ]
+  }
+])
 
 onMounted(() => {
   if (!sectionRef.value) return
@@ -81,35 +98,46 @@ onMounted(() => {
             {{ t('contact.description') }}
         </p>
 
-        <div class="flex justify-center items-center min-h-[120px] my-12">
-            <TooltipProvider :delay-duration="0">
-                <div class="flex gap-6 flex-wrap justify-center">
-                    <div v-for="social in socialMedia" :key="social.key" class="social-btn">
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Button
-                              as="a"
-                              :href="social.url"
-                              :data-social="social.key"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              size="lg"
-                              variant="outline"
-                              class="social-link size-12 rounded-full p-0 border-zinc-300 dark:border-zinc-400/50
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8 min-h-[150px] my-12">
+          <TooltipProvider :delay-duration="0">
+            <template v-for="(group, index) in socialGroups" :key="index">
+              
+              <div class="flex flex-col items-center gap-4">
+                <span class="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+                  {{ group.title }}
+                </span>
+                
+                <div class="flex gap-4">
+                  <div v-for="social in group.items" :key="social.key" class="social-btn">
+                    <Tooltip>
+                      <TooltipTrigger as-child>
+                        <Button
+                          as="a"
+                          :href="social.url"
+                          :data-social="social.key"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          size="lg"
+                          variant="outline"
+                          class="social-link size-12 rounded-full p-0 border-zinc-300 dark:border-zinc-400/50
                                   bg-white dark:bg-zinc-900 backdrop-blur-md transition-all duration-300
                                   hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]
                                   active:scale-95 [&_svg]:size-5 text-zinc-700 dark:text-white"
-                          >
-                              <component :is="social.icon" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="bottom" :side-offset="10" class="font-medium text-xs">
-                            {{ t(social.name) }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
+                        >
+                          <component :is="social.icon" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" :side-offset="10" class="font-medium text-xs">
+                        {{ t(social.name) }}
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                 </div>
-            </TooltipProvider>
+              </div>
+
+              <div v-if="index === 0" class="hidden md:block w-[1px] h-12 bg-zinc-200 dark:bg-zinc-800 mx-4"></div>
+            </template>
+          </TooltipProvider>
         </div>
     </div>
   </section>

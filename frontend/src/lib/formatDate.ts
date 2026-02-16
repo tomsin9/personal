@@ -80,3 +80,44 @@ export function formatDateTime(isoDate: string | undefined, locale?: string): st
   }
   return new Intl.DateTimeFormat(intlLocale, options).format(d)
 }
+
+
+type RelativeTimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
+
+/**
+ * Format an ISO date as a relative time string (e.g. "2 hours ago", "3 days ago").
+ * Uses Intl.RelativeTimeFormat for locale-aware output (en-GB / zh-HK).
+ *
+ * @param isoDate - ISO 8601 string
+ * @param locale - Optional locale ('en', 'zh'). When omitted, uses browser default.
+ * @returns Relative time string, or formatted date if invalid / far in the past
+ */
+export function formatTimeAgo(isoDate: string | undefined, locale?: string): string {
+  if (isoDate == null || isoDate === '') return ''
+  const d = parseAsUtcIfNeeded(isoDate)
+  if (Number.isNaN(d.getTime())) return isoDate
+
+  const intlLocale = locale ? localeMap[locale] ?? locale : undefined
+  const rtf = new Intl.RelativeTimeFormat(intlLocale, { numeric: 'auto' })
+
+  const now = new Date()
+  const diffMs = d.getTime() - now.getTime()
+  const diffSec = Math.round(diffMs / 1000)
+  const diffMin = Math.round(diffSec / 60)
+  const diffHour = Math.round(diffMin / 60)
+  const diffDay = Math.round(diffHour / 24)
+  const diffWeek = Math.round(diffDay / 7)
+  const diffMonth = Math.round(diffDay / 30)
+  const diffYear = Math.round(diffDay / 365)
+
+  const choose = (value: number, unit: RelativeTimeUnit): string =>
+    rtf.format(value, unit)
+
+  if (Math.abs(diffSec) < 60) return choose(diffSec, 'second')
+  if (Math.abs(diffMin) < 60) return choose(diffMin, 'minute')
+  if (Math.abs(diffHour) < 24) return choose(diffHour, 'hour')
+  if (Math.abs(diffDay) < 7) return choose(diffDay, 'day')
+  if (Math.abs(diffWeek) < 4) return choose(diffWeek, 'week')
+  if (Math.abs(diffMonth) < 12) return choose(diffMonth, 'month')
+  return choose(diffYear, 'year')
+}

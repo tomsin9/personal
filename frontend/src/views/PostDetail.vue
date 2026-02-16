@@ -5,7 +5,7 @@ import axios from 'axios'
 import { marked } from 'marked'
 import { useI18n } from 'vue-i18n'
 import { auth } from '@/store/auth'
-import { formatDate, formatDateTime } from '@/lib/formatDate'
+import { formatDate, formatDateTime, formatTimeAgo } from '@/lib/formatDate'
 import { ArrowLeftIcon, PencilIcon, SaveIcon, XIcon, PlusIcon, Trash2Icon } from 'lucide-vue-next'
 import {
   AlertDialogRoot,
@@ -181,7 +181,6 @@ const confirmDelete = async () => {
     <Button as="a" href="/blog" variant="link" class="mt-4">{{ t('navbar.blog') }}</Button>
   </div>
   <div v-else-if="post" class="container pt-12 pb-32 lg:pt-20 lg:pb-40 animate-in fade-in duration-700">
-
     <div class="flex justify-between items-center mb-4">
       <Button
         as="a"
@@ -236,12 +235,12 @@ const confirmDelete = async () => {
         </div>
       </div>
     </div>
-
-    <p class="text-xs md:text-sm text-muted-foreground mb-4">
-      {{ formatDate(post.created_at, locale) }}
-      <template v-if="post.updated_at && formatDateTime(post.updated_at, locale) !== formatDateTime(post.created_at, locale)">
+    
+    <p class="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-4">
+      {{ formatDate(post.created_at, locale) }} ({{ formatTimeAgo(post.created_at, locale) }})
+      <!-- <template v-if="post.updated_at && formatDateTime(post.updated_at, locale) !== formatDateTime(post.created_at, locale)">
         · {{ t('blog.updatedOn') }} {{ formatDateTime(post.updated_at, locale) }}
-      </template>
+      </template> -->
     </p>
 
     <!-- Tags: view or edit -->
@@ -319,18 +318,19 @@ const confirmDelete = async () => {
         :placeholder="t('blog.excerptPlaceholder')"
       />
     </div>
-    <p v-else-if="post.excerpt" class="text-lg text-muted-foreground mb-4">{{ post.excerpt }}</p>
-
-    <div class="mt-12">
+    <p v-else-if="post.excerpt" class="text-muted-foreground mb-4">{{ post.excerpt }}</p>
+    <div v-if="!isEditing" class="mt-8">
+  
       <article
         v-if="!isEditing"
         class="prose dark:prose-invert prose-headings:font-semibold prose-pre:border max-w-none"
         v-html="marked(post.content ?? '')"
       ></article>
+    
+    </div>
 
-      <div v-else class="animate-in zoom-in-95 duration-200">
-        <Editor v-model="editForm.content" />
-      </div>
+    <div v-else class="animate-in zoom-in-95 duration-200">
+      <Editor v-model="editForm.content" />
     </div>
 
   </div>

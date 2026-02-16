@@ -16,11 +16,11 @@ const personalInfo = computed(() => siteConfig.personal[locale.value as keyof ty
         <!-- <div class="h-[3px] w-16 bg-destructive rounded-full"></div> -->
     </div>
     <div class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 lg:gap-8 items-start mb-12">
-      <div class="md:col-span-7 lg:col-span-8">
-        <p class="text-muted-foreground" v-html="personalInfo.aboutMe"></p>
+      <div class="md:col-span-5 lg:col-span-2 pt-10 lg:pt-0 flex items-center justify-start">
+        <img :src="siteConfig.aboutMeImage" :alt="siteConfig.author" class="w-full h-full max-w-[150px] object-cover rounded-xl">
       </div>
-      <div class="md:col-span-5 lg:col-span-4 pt-10 lg:pt-0">
-        <img :src="siteConfig.aboutMeImage" :alt="siteConfig.author" class="w-full h-full max-w-[250px] object-cover rounded-xl mx-auto">
+      <div class="md:col-span-7 lg:col-span-10">
+        <p class="text-muted-foreground" v-html="personalInfo.aboutMe"></p>
       </div>
     </div>
   </section>

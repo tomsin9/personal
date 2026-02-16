@@ -27,7 +27,7 @@ function scrollToAbout() {
 </script>
 
 <template>
-  <div class="relative w-full py-32 min-h-[90vh] md:min-h-0 lg:min-h-0 xl:min-h-[90vh] flex items-center justify-center overflow-hidden">
+  <div class="relative w-full py-32 min-h-[100vh] md:min-h-[50vh] xl:min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0"></div>
 
     <div class="container relative z-10 mx-auto px-4 md:px-6">

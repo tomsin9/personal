@@ -105,6 +105,8 @@
     "contact": {
         "title": "與我聯繫",
         "description": "隨時歡迎有趣的項目合作、創意構思或技術交流。",
+        "devTitle": "開發與專業",
+        "photoTitle": "攝影",
         "email": "電郵",
         "github": "GitHub",
         "linkedin": "LinkedIn",

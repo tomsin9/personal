@@ -23,6 +23,7 @@ export const siteConfig = {
         github: "https://github.com/tomsin9/",
         linkedin: "https://linkedin.com/in/tom-sin/",
         instagram: "https://instagram.com/sinp9_",
+        istock: "https://www.istockphoto.com/portfolio/TomSinP",
         email: "mailto:contact@tomsinp.com"
     },
     personal: {
@@ -30,13 +31,27 @@ export const siteConfig = {
             heroTitle: "Tom <span class='text-zinc-500'>SIN</span>",
             heroDescription: "A developer based in Hong Kong. I specialize in building clean, functional websites and web applications from scratch.",
             location: "Hong Kong",
-            aboutMe: "Full-Stack Web Developer with 2+ years of professional experience specializing in Python/Django backend development and full-stack web applications. Proven track record building scalable platforms including corporate websites, event management systems with Stripe payment integration, job portals, and interactive 3D/AI community sites. Led backend development and provided on-site technical support for BCON Shenzhen 2025 and IAICC 2025, Asia's first Blender Conference serving hundreds of international attendees. Proficient in Docker deployment, API integrations, and cutting-edge AI generative tools (Stable Diffusion, FLUX.1, ComfyUI, RAG).<br><br>Outside of my professional work, I am passionate about photography and football."
+            aboutMe: `
+    Full-Stack Web Developer with 2+ years of professional experience, specializing in <strong>Python/Django</strong> backend development and scalable web architectures. I have a proven track record of building complex platforms, from Stripe-integrated corporate systems to interactive communities dedicated to 3D and AIGC. I am proficient in Docker deployment, API integrations, and modern full-stack development practices.
+    <br><br>
+    I also contributed on-site technical and backend support for <strong>BCON Shenzhen 2025 (IAICC 2025)</strong>, Asia's first Blender Conference, ensuring seamless services for hundreds of international attendees.
+    <br><br>
+    Beyond core development, I specialize in augmenting web applications with generative AI capabilities. This includes optimizing FLUX.1 and Stable Diffusion models through ComfyUI workflows, and implementing RAG (Retrieval-Augmented Generation) frameworks via Dify to deliver intelligent, context-aware user experiences.
+    <br><br>
+    Outside of my professional work, I am a passionate photographer and football player.`
         },
         zh: {
             heroTitle: "Tom <span class='text-zinc-500'>SIN</span>",
             heroDescription: "一位來自香港的開發者，擅長於從零開始構建簡潔且實用的網站及網頁應用程式。",
             location: "香港",
-            aboutMe: "全端網站開發人員，擁有兩年以上專業經驗，專注於 Python/Django 後端開發及全端網站應用建構。具備豐富實績，曾開發可擴展的平台，包括企業網站、結合 Stripe 支付功能的活動管理系統、求職平台，以及具互動性的 3D／AI 社群網站。曾主導後端開發並為亞洲首個 Blender 官方大會－深圳 BCON 2025 暨 國際人工智能及創意大會 IAICC 2025 提供現場技術支援，這兩項活動共吸引數百名國際參與者。熟練掌握 Docker 部署、API 整合，以及各類先進 AI 生成工具（如 Stable Diffusion、FLUX.1、ComfyUI、RAG）。<br><br>工作以外，我熱衷於攝影及足球。"
+            aboutMe: `
+    Full-Stack Web Developer，擁有 2 年以上專業經驗，專精於 <strong>Python/Django</strong> 後端開發與可擴展架構。我具備豐富的平台構建經驗，曾開發整合 Stripe 支付系統的企業級平台，以及專為 3D 與 AIGC 愛好者而設的互動社區。我熟練掌握 Docker 部署、API 系統整合及現代全棧開發實踐。
+    <br><br>
+    我曾參與 <strong>BCON Shenzhen 2025 (IAICC 2025)</strong> 亞洲首屆 Blender 大會的技術架構工作，並在活動期間提供現場後端支援，確保數百名國際與會者的系統運作順暢。
+    <br><br>
+    在核心開發以外，我擅長為網頁應用引入 Generative AI 技術。這包括透過 ComfyUI 工作流優化 FLUX.1 與 Stable Diffusion 模型，並利用 Dify 實作 RAG（檢索增強生成）架構，為用戶提供更智能、具備語境感知能力的交互體驗。
+    <br><br>
+    在專業工作之外，我熱衷於攝影和足球。`
         }
     },
     /** Skill groups: key used for i18n (skills.groups.<key>), skills = comma-separated list */

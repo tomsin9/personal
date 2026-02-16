@@ -105,6 +105,8 @@
     "contact": {
         "title": "Get in Touch",
         "description": "Always open to interesting projects and meaningful collaborations.",
+        "devTitle": "Dev & Professional",
+        "photoTitle": "Photography",
         "email": "Email",
         "github": "GitHub",
         "linkedin": "LinkedIn",

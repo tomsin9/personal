@@ -24,8 +24,7 @@ function getStoredSeasonsEffect(): boolean {
 }
 
 const isDark = useDark({ initialValue: 'dark' })
-
-const seasonsEffectOn = ref(getStoredSeasonsEffect())
+const seasonsEffectOn = ref(false)
 
 function toggleSeason() {
   seasonsEffectOn.value = !seasonsEffectOn.value
@@ -49,6 +48,7 @@ function onMouseMove(e: MouseEvent) {
 }
 
 onMounted(() => {
+  seasonsEffectOn.value = getStoredSeasonsEffect()
   window.addEventListener('mousemove', onMouseMove)
 })
 onUnmounted(() => {
