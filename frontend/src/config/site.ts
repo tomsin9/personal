@@ -23,7 +23,6 @@ export const siteConfig = {
         github: "https://github.com/tomsin9/",
         linkedin: "https://linkedin.com/in/tom-sin/",
         instagram: "https://instagram.com/sinp9_",
-        istock: "https://www.istockphoto.com/portfolio/TomSinP",
         email: "mailto:contact@tomsinp.com"
     },
     personal: {

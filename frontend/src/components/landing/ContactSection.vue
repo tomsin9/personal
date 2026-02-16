@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Github, Linkedin, Mail, Instagram, Image as ImageIcon } from 'lucide-vue-next'
+import { Github, Linkedin, Mail, Instagram } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { siteConfig } from '@/config/site'
@@ -28,12 +28,14 @@ const labelMap: Record<keyof typeof iconMap, string> = {
     instagram: 'Instagram'
 }
 
-const socialMedia = (Object.entries(siteConfig.socials) as [keyof typeof siteConfig.socials, string][]).map(([key, url]) => ({
-  key,
-  name: labelMap[key],
-  icon: iconMap[key],
-  url,
-}))
+type SocialKey = keyof typeof iconMap
+const socialKeys = Object.keys(iconMap) as SocialKey[]
+const socialMedia = (Object.entries(siteConfig.socials) as [string, string][])
+  .filter(([key]) => socialKeys.includes(key as SocialKey))
+  .map(([key, url]) => {
+    const k = key as SocialKey
+    return { key: k, name: labelMap[k], icon: iconMap[k], url }
+  })
 
 const socialGroups = computed(() => [
   {
