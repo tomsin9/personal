@@ -32,11 +32,13 @@ const posts = ref<Post[]>([])
 const totalPosts = ref(0) // Get from backend
 const postsPerPage = 12
 const isLoading = ref(true)
+const skeletonCount = 2
 
 const currentPage = ref(Number(route.query.page) || 1)
 
 const fetchPosts = async () => {
   isLoading.value = true
+  posts.value = [] // Show skeleton immediately instead of stale cards
   try {
     const headers = auth.token ? { Authorization: `Bearer ${auth.token}` } : {}
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
@@ -93,7 +95,7 @@ watch(
     </div>
 
     <div v-if="isLoading" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 mb-10">
-      <Card v-for="i in posts.length" :key="i" class="flex flex-col h-full justify-between border-zinc-500/20">
+      <Card v-for="i in skeletonCount" :key="'skeleton-' + i" class="flex flex-col h-full justify-between border-zinc-500/20">
         <CardHeader>
           <div class="flex justify-between items-start mb-2">
             <Skeleton class="h-5 w-16" />

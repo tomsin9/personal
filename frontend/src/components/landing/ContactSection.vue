@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Github, Linkedin, Mail, Instagram } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger)
 const { t } = useI18n()
 
 const sectionRef = ref<HTMLElement | null>(null)
+const scrollTriggerRef = ref<ScrollTrigger | null>(null)
 
 const iconMap = {
     email: Mail,
@@ -57,8 +58,6 @@ const socialGroups = computed(() => [
 onMounted(() => {
   if (!sectionRef.value) return
 
-  let q = gsap.utils.selector(sectionRef.value);
-
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: sectionRef.value,
@@ -66,22 +65,30 @@ onMounted(() => {
       toggleActions: 'play none none none',
     },
   })
+  scrollTriggerRef.value = tl.scrollTrigger ?? null
 
-  tl.from(".animate-text", {
+  tl.from('.animate-text', {
     y: 30,
     opacity: 0,
     duration: 0.8,
     stagger: 0.2,
-    ease: "power3.out"
+    ease: 'power3.out'
   })
 
-  tl.from(sectionRef.value.querySelectorAll(".social-btn"), {
+  tl.from(sectionRef.value.querySelectorAll('.social-btn'), {
     scale: 0,
     opacity: 0,
     duration: 0.6,
     stagger: 0.1,
-    ease: "back.out(1.7)",
-  }, "-=0.4")
+    ease: 'back.out(1.7)',
+  }, '-=0.4')
+})
+
+onUnmounted(() => {
+  if (scrollTriggerRef.value) {
+    scrollTriggerRef.value.kill()
+    scrollTriggerRef.value = null
+  }
 })
 </script>
 
@@ -130,7 +137,7 @@ onMounted(() => {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="bottom" :side-offset="10" class="font-medium text-xs">
-                        {{ t(social.name) }}
+                        {{ social.name }}
                       </TooltipContent>
                     </Tooltip>
                   </div>

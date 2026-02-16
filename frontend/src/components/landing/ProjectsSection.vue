@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { apiBaseUrl } from '@/config/site'
 import { useI18n } from 'vue-i18n'
@@ -28,11 +28,14 @@ const projects = ref<Project[]>([])
 const isLoading = ref(true)
 const isExpanded = ref(false)
 const projectsSectionRef = ref<HTMLElement | null>(null)
+const scrollTriggerRef = ref<ScrollTrigger | null>(null)
 let scrollTriggerDone = false
+const skeletonCount = 3
 
 const fetchProjects = async () => {
+  isLoading.value = true
+  projects.value = []
   try {
-    isLoading.value = true
     const response = await axios.get(`${apiBaseUrl}/api/v1/projects/`)
     projects.value = response.data || []
   } catch (error) {
@@ -64,6 +67,7 @@ const setupProjectsAnimation = () => {
       toggleActions: 'play none none none'
     }
   })
+  scrollTriggerRef.value = tl.scrollTrigger ?? null
   tl.from(header, {
     opacity: 0,
     y: 12,
@@ -90,6 +94,14 @@ onMounted(() => {
   fetchProjects()
 })
 
+onUnmounted(() => {
+  if (scrollTriggerRef.value) {
+    scrollTriggerRef.value.kill()
+    scrollTriggerRef.value = null
+  }
+  scrollTriggerDone = false
+})
+
 </script>
 
 <template>
@@ -114,8 +126,8 @@ onMounted(() => {
     <template v-if="isLoading">
       <ItemGroup class="space-y-4">
         <Item
-          v-for="i in displayedProjects.length"
-          :key="i"
+          v-for="i in skeletonCount"
+          :key="'skeleton-' + i"
           variant="outline"
           class="p-4 bg-card/80 backdrop-blur-md border border-border/80 hover:border-zinc-500/50"
         >

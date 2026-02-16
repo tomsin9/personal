@@ -68,6 +68,13 @@ watch(
   { immediate: true }
 )
 
+// Formatted date line: use computed so locale.value is read in script (avoids ref not unwrapped on first paint)
+const formattedDateLine = computed(() => {
+  const p = post.value
+  if (!p?.created_at) return ''
+  return `${formatDate(p.created_at, locale.value)} (${formatTimeAgo(p.created_at, locale.value)})`
+})
+
 onMounted(async () => {
   loadError.value = null
   try {
@@ -237,7 +244,7 @@ const confirmDelete = async () => {
     </div>
     
     <p class="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-4">
-      {{ formatDate(post.created_at, locale) }} ({{ formatTimeAgo(post.created_at, locale) }})
+      {{ formattedDateLine }}
       <!-- <template v-if="post.updated_at && formatDateTime(post.updated_at, locale) !== formatDateTime(post.created_at, locale)">
         · {{ t('blog.updatedOn') }} {{ formatDateTime(post.updated_at, locale) }}
       </template> -->

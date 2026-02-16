@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { apiBaseUrl } from '@/config/site'
@@ -12,18 +12,20 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import type { Post } from '@/types/blog'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 gsap.registerPlugin(ScrollTrigger)
 
 const latestPosts = ref<Post[]>([])
 const isLoading = ref(true)
 const blogSectionRef = ref<HTMLElement | null>(null)
+const scrollTriggerRef = ref<ScrollTrigger | null>(null)
 let scrollTriggerDone = false
 
 const fetchPosts = async () => {
+  isLoading.value = true
+  latestPosts.value = []
   try {
-    isLoading.value = true
     const headers = auth.token ? { Authorization: `Bearer ${auth.token}` } : {}
     const response = await axios.get(`${apiBaseUrl}/api/v1/blog/`, {
       params: { page: 1, size: 2, published_only: true },
@@ -51,6 +53,7 @@ const setupBlogAnimation = () => {
       toggleActions: 'play none none none'
     }
   })
+  scrollTriggerRef.value = tl.scrollTrigger ?? null
   tl.from(header, {
     opacity: 0,
     y: 12,
@@ -73,6 +76,14 @@ watch(() => latestPosts.value.length, (len) => {
 
 onMounted(() => {
   fetchPosts()
+})
+
+onUnmounted(() => {
+  if (scrollTriggerRef.value) {
+    scrollTriggerRef.value.kill()
+    scrollTriggerRef.value = null
+  }
+  scrollTriggerDone = false
 })
 </script>
 
