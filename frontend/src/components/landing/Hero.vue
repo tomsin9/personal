@@ -1,16 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { siteConfig } from '@/config/site'
 
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { ArrowRight, Mail, Code, Github, Linkedin, Instagram } from 'lucide-vue-next'
+import { 
+  ArrowRight, 
+  Mail, 
+  Code, 
+  Github, 
+  Linkedin, 
+  Instagram 
+} from 'lucide-vue-next'
 
 const { locale, t } = useI18n()
-const personalInfo = computed(() => siteConfig.personal[locale.value])
+const personalInfo = computed(() => siteConfig.personal[locale.value as keyof typeof siteConfig.personal])
 
-function openInNewTab(url) {
+// Icon 映射表
+const icons = {
+  github: Github,
+  linkedin: Linkedin,
+  // instagram: Instagram,
+  email: Mail
+}
+
+function openInNewTab(url: string) {
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
@@ -18,81 +32,64 @@ function scrollToProjects() {
   const el = document.getElementById('projects')
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
-
-function scrollToAbout() {
-  const el = document.getElementById('about')
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
-
 </script>
 
 <template>
-  <div class="relative w-full py-32 min-h-[100vh] md:min-h-[50vh] xl:min-h-[90vh] flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 z-0"></div>
+  <section class="relative w-full flex items-center justify-center overflow-hidden py-16 md:py-32 min-h-[100vh] md:min-h-[50vh] lg:min-h-[90vh]">
+    <!-- <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.08),transparent_50%)]"></div> -->
 
-    <div class="container relative z-10 mx-auto px-4 md:px-6">
-      <div class="flex flex-col items-center space-y-4 text-center">
+    <div class="container relative z-10 mx-auto px-6">
+      <div class="flex flex-col items-center text-center">
         
-        <div class="inline-flex items-center rounded-full border border-secondary bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground mb-4">
-          <Code class="mr-2 h-4 w-4" />
-          <span>Full Stack Web Developer</span>
+        <div class="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary mb-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
+          <Code class="mr-2 h-3.5 w-3.5" />
+          <span class="tracking-wide uppercase">Full Stack Web Developer</span>
         </div>
 
-        <h1 class="text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl" v-html="personalInfo.heroTitle"></h1>
+        <h1 
+          class="max-w-4xl text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] mb-6 antialiased"
+          v-html="personalInfo.heroTitle"
+        ></h1>
         
-        <p class="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+        <p class="mx-auto max-w-[600px] text-muted-foreground text-base md:text-xl leading-relaxed mb-10 px-4">
             {{ personalInfo.heroDescription }}
         </p>
 
-        <div class="flex flex-col gap-2 min-[400px]:flex-row justify-center items-center pt-4">
-          <Button size="lg" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#projects" @click.prevent="scrollToProjects">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-lg">
+          
+          <Button 
+            size="lg" 
+            class="font-bold tracking-wide w-fit px-10 h-12 text-base rounded-full shadow-md shadow-primary/10 transition-all hover:shadow-primary/20 active:scale-95"
+            as="a" 
+            href="#projects" 
+            @click.prevent="scrollToProjects"
+          >
             {{ t('system.viewProjects') }}
-            <ArrowRight class="ml-2 h-4 w-4" />
+            <ArrowRight class="ml-2 h-5 w-5" />
           </Button>
 
-          <!-- <Button size="lg" variant="outline" class="font-bold tracking-wide w-full md:w-auto" as="a" href="#about" @click.prevent="scrollToAbout">
-            {{ t('system.aboutMe') }}
-          </Button> -->
-
-          <div class="flex flex-row gap-2">
-            <Button
-              variant="outline"
-              size="icon-lg"
-              aria-label="GitHub"
-              class="social-link"
-              data-social="github"
-              @click="openInNewTab(siteConfig.socials.github)"
-            >
-              <Github class="h-4 w-4" />
-              <span class="sr-only">{{ t('system.github') }}</span>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon-lg"
-              aria-label="LinkedIn"
-              class="social-link"
-              data-social="linkedin"
-              @click="openInNewTab(siteConfig.socials.linkedin)"
-            >
-              <Linkedin class="h-4 w-4" />
-              <span class="sr-only">{{ t('system.linkedin') }}</span>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon-lg"
-              aria-label="Email"
-              class="social-link"
-              data-social="email"
-              @click="openInNewTab(siteConfig.socials.email)"
-            >
-              <Mail class="h-4 w-4" />
-              <span class="sr-only">{{ t('system.contactMe') }}</span>
-            </Button>
+          <div class="flex items-center gap-3">
+            <template v-for="(url, key) in siteConfig.socials" :key="key">
+              <Button
+                v-if="icons[key as keyof typeof icons]"
+                variant="outline"
+                size="icon"
+                :aria-label="key"
+                :data-social="key"
+                class="social-link size-12 rounded-full p-0 border-zinc-300 dark:border-zinc-400/50
+                                  bg-white dark:bg-zinc-900 backdrop-blur-md transition-all duration-300
+                                  hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]
+                                  active:scale-95 [&_svg]:size-5 text-zinc-700 dark:text-white"
+                @click="openInNewTab(url)"
+              >
+                <component :is="icons[key as keyof typeof icons]" class="h-5 w-5" />
+                <span class="sr-only">{{ key }}</span>
+              </Button>
+            </template>
           </div>
         </div>
+
       </div>
     </div>
-  </div>
+  </section>
 </template>

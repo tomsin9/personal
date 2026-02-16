@@ -126,7 +126,7 @@ onUnmounted(() => {
                           :data-social="social.key"
                           target="_blank"
                           rel="noopener noreferrer"
-                          size="lg"
+                          size="icon"
                           variant="outline"
                           class="social-link size-12 rounded-full p-0 border-zinc-300 dark:border-zinc-400/50
                                   bg-white dark:bg-zinc-900 backdrop-blur-md transition-all duration-300
