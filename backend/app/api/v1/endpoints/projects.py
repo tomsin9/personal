@@ -3,6 +3,7 @@ import os, shutil, uuid, io
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
+from sqlalchemy import cast, Integer
 from typing import List
 from PIL import Image
 from pathlib import Path
@@ -20,7 +21,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.get("/", response_model=List[ProjectRead])
 def read_projects(session: Session = Depends(get_session)):
-    statement = select(Project).order_by(Project.order, Project.updated_at.desc())
+    statement = select(Project).order_by(cast(Project.order, Integer), Project.updated_at.desc())
     return session.exec(statement).all()
 
 

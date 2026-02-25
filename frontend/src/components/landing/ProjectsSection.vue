@@ -50,6 +50,18 @@ const selectedProject = ref<Project | null>(null)
 const deleteDialogOpen = ref(false)
 const projectToDelete = ref<Project | null>(null)
 const isDeleting = ref(false)
+const expandedDescriptionIds = ref<Set<number>>(new Set())
+const descriptionLineThreshold = 120
+
+const toggleDescription = (projectId: number) => {
+  const next = new Set(expandedDescriptionIds.value)
+  if (next.has(projectId)) next.delete(projectId)
+  else next.add(projectId)
+  expandedDescriptionIds.value = next
+}
+
+const isDescriptionLong = (description: string) => (description?.length ?? 0) > descriptionLineThreshold
+const isDescriptionExpanded = (projectId: number) => expandedDescriptionIds.value.has(projectId)
 
 const fetchProjects = async () => {
   isLoading.value = true
@@ -255,9 +267,22 @@ onUnmounted(() => {
                   </div>
                 </div>
 
-                <ItemDescription class="mt-1 line-clamp-3 md:line-clamp-2">
+                <ItemDescription
+                  :class="[
+                    'mt-1',
+                    isDescriptionLong(project.description) && !isDescriptionExpanded(project.id) ? 'line-clamp-3 md:line-clamp-2' : 'line-clamp-none'
+                  ]"
+                >
                   {{ project.description }}
                 </ItemDescription>
+                <button
+                  v-if="isDescriptionLong(project.description)"
+                  type="button"
+                  class="mt-1 text-xs text-primary hover:underline"
+                  @click="toggleDescription(project.id)"
+                >
+                  {{ isDescriptionExpanded(project.id) ? t('projects.showLessDescription') : t('projects.showMoreDescription') }}
+                </button>
               </div>
 
               <div class="mt-3 flex items-center justify-between gap-4">

@@ -101,6 +101,8 @@
         "link": "連結",
         "showMore": "顯示更多",
         "showLess": "顯示更少",
+        "showMoreDescription": "顯示更多",
+        "showLessDescription": "顯示更少",
         "confirmDelete": "確定要刪除此專案？",
         "deleteProject": "刪除",
         "deleteProjectConfirmTitle": "確定要刪除此專案？",
