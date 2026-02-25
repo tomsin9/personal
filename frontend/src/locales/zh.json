@@ -121,7 +121,9 @@
         "uploadImage": "上傳圖片",
         "tagsLabel": "標籤",
         "addTag": "新增標籤",
-        "removeTag": "移除標籤"
+        "removeTag": "移除標籤",
+        "githubUrlLabel": "GitHub URL",
+        "liveDemoUrlLabel": "即時演示URL"
     },
     "contact": {
         "title": "與我聯繫",

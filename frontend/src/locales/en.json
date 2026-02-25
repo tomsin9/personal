@@ -121,7 +121,9 @@
         "uploadImage": "Upload Image",
         "tagsLabel": "Tags",
         "addTag": "Add tag",
-        "removeTag": "Remove tag"
+        "removeTag": "Remove tag",
+        "githubUrlLabel": "GitHub URL",
+        "liveDemoUrlLabel": "Live Demo URL"
     },
     "contact": {
         "title": "Get in Touch",

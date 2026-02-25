@@ -180,7 +180,7 @@ const handleSubmit = async () => {
               <Input
                 v-model="newTag"
                 type="text"
-                class="h-7 w-28 text-[10px] uppercase tracking-widest"
+                class="h-7 w-28 text-[10px]"
                 :placeholder="t('projects.addTag')"
                 @keydown.enter.prevent="addTag"
               />
@@ -188,6 +188,17 @@ const handleSubmit = async () => {
                 <Plus class="w-3.5 h-3.5" />
               </Button>
             </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <Label for="github_url">{{ t('projects.githubUrlLabel') }}</Label>
+            <Input id="github_url" v-model="formData.github_url" type="url" :placeholder="'https://github.com/...'" />
+          </div>
+          <div class="space-y-2">
+            <Label for="live_url">{{ t('projects.liveDemoUrlLabel') }}</Label>
+            <Input id="live_url" v-model="formData.live_url" type="url" :placeholder="'https://example.com'" />
           </div>
         </div>
 
