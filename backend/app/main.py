@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from contextlib import asynccontextmanager
@@ -29,6 +30,8 @@ app = FastAPI(
         "defaultModelsExpandDepth": -1
     },  # Remember auth in Swagger UI
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(api_router, prefix="/api/v1")
 

@@ -27,4 +27,18 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      // handle API requests
+      '/api': {
+        target: 'http://backend:8000',
+        changeOrigin: true,
+      },
+      // handle static resource requests
+      '/static': {
+        target: 'http://backend:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

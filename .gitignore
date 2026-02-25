@@ -17,6 +17,7 @@ ENV/
 .pytest_cache/
 .coverage
 htmlcov/
+backend/static/uploads/
 
 # --- macOS / OS ---
 .DS_Store

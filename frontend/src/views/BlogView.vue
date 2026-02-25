@@ -9,7 +9,7 @@ import BlogCard from '@/components/BlogCard.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/store/auth'
-import { PlusIcon } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next'
 import {
   Pagination,
   PaginationContent,
@@ -85,11 +85,11 @@ watch(
         v-if="auth.isAdmin"
         as="a"
         :href="'/blog/post/new'"
-        variant="default"
+        variant="outline"
         size="sm"
         class="mt-4"
       >
-        <PlusIcon class="w-4 h-4 mr-2" />
+        <Plus class="size-4" />
         {{ t('blog.createPost') }}
       </Button>
     </div>
