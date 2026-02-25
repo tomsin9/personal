@@ -101,8 +101,6 @@
         "link": "Link",
         "showMore": "Show More",
         "showLess": "Show Less",
-        "showMoreDescription": "Show more",
-        "showLessDescription": "Show less",
         "confirmDelete": "Delete this project?",
         "deleteProject": "Delete",
         "deleteProjectConfirmTitle": "Delete this project?",

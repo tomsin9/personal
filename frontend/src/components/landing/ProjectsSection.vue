@@ -50,18 +50,6 @@ const selectedProject = ref<Project | null>(null)
 const deleteDialogOpen = ref(false)
 const projectToDelete = ref<Project | null>(null)
 const isDeleting = ref(false)
-const expandedDescriptionIds = ref<Set<number>>(new Set())
-const descriptionLineThreshold = 120
-
-const toggleDescription = (projectId: number) => {
-  const next = new Set(expandedDescriptionIds.value)
-  if (next.has(projectId)) next.delete(projectId)
-  else next.add(projectId)
-  expandedDescriptionIds.value = next
-}
-
-const isDescriptionLong = (description: string) => (description?.length ?? 0) > descriptionLineThreshold
-const isDescriptionExpanded = (projectId: number) => expandedDescriptionIds.value.has(projectId)
 
 const fetchProjects = async () => {
   isLoading.value = true
@@ -69,6 +57,7 @@ const fetchProjects = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}/api/v1/projects/`)
     projects.value = response.data || []
+    checkOverflow()
   } catch (error) {
     console.error('Failed to fetch projects:', error)
   } finally {
@@ -159,23 +148,92 @@ const setupProjectsAnimation = () => {
   }, '-=0.12')
 }
 
+const descriptionRefs = ref<Record<number, HTMLElement | null>>({})
+const expandedDescriptionIds = ref<Set<number>>(new Set())
+const needsToggle = ref<Record<number, boolean>>({})
+
+const isDescriptionExpanded = (projectId: number) => expandedDescriptionIds.value.has(projectId)
+
+const toggleDescription = (projectId: number) => {
+  const next = new Set(expandedDescriptionIds.value)
+  const isCollapsing = next.has(projectId)
+  if (isCollapsing) {
+    next.delete(projectId)
+  } else {
+    next.add(projectId)
+  }
+  expandedDescriptionIds.value = next
+  // Keep button visible when collapsing so it doesn't flicker; re-check after transition
+  if (isCollapsing) {
+    needsToggle.value = { ...needsToggle.value, [projectId]: true }
+    nextTick(() => {
+      setTimeout(() => checkOverflow(), 350)
+    })
+  } else {
+    nextTick(() => checkOverflow())
+  }
+}
+
+/** Get the real DOM element (component ref gives instance, we need $el) */
+const getDescriptionEl = (projectId: number): HTMLElement | null => {
+  const refOrInstance = descriptionRefs.value[projectId]
+  if (!refOrInstance) return null
+  return (refOrInstance as unknown as { $el?: HTMLElement })?.$el ?? (refOrInstance as HTMLElement)
+}
+
+const checkOverflow = () => {
+  if (isLoading.value) return
+
+  nextTick(() => {
+    setTimeout(() => {
+      const next: Record<number, boolean> = { ...needsToggle.value }
+      displayedProjects.value.forEach((p) => {
+        const el = getDescriptionEl(p.id)
+        if (el) {
+          const hasOverflow = el.scrollHeight > el.clientHeight + 2
+          next[p.id] = hasOverflow
+        }
+      })
+      needsToggle.value = next
+    }, 200)
+  })
+}
+
+let resizeObserver: ResizeObserver | null = null
+
+onMounted(() => {
+  fetchProjects()
+
+  resizeObserver = new ResizeObserver(() => {
+    checkOverflow()
+  })
+  
+  if (projectsSectionRef.value) {
+    resizeObserver.observe(projectsSectionRef.value)
+  }
+})
+
 watch([isLoading, displayedProjects], () => {
   if (!isLoading.value && displayedProjects.value.length > 0) {
     nextTick(() => setupProjectsAnimation())
   }
 }, { flush: 'post' })
 
-onMounted(() => {
-  fetchProjects()
-})
-
 onUnmounted(() => {
+  resizeObserver?.disconnect()
+
   if (scrollTriggerRef.value) {
     scrollTriggerRef.value.kill()
     scrollTriggerRef.value = null
   }
   scrollTriggerDone = false
 })
+
+watch(isLoading, (loading) => {
+  if (!loading) {
+    checkOverflow();
+  }
+});
 
 </script>
 
@@ -268,20 +326,28 @@ onUnmounted(() => {
                 </div>
 
                 <ItemDescription
+                  :ref="(el) => { if (el) descriptionRefs[project.id] = el as HTMLElement }"
                   :class="[
-                    'mt-1',
-                    isDescriptionLong(project.description) && !isDescriptionExpanded(project.id) ? 'line-clamp-3 md:line-clamp-2' : 'line-clamp-none'
+                    'mt-1 overflow-hidden transition-[max-height] duration-300 ease-in-out',
+                    !isDescriptionExpanded(project.id) ? 'line-clamp-3 md:line-clamp-2' : 'line-clamp-none'
                   ]"
                 >
                   {{ project.description }}
                 </ItemDescription>
+
                 <button
-                  v-if="isDescriptionLong(project.description)"
+                  v-if="needsToggle[project.id] || isDescriptionExpanded(project.id)"
                   type="button"
-                  class="mt-1 text-xs text-primary hover:underline"
+                  class="mt-1.5 text-xs font-semibold text-primary/80 hover:text-primary transition-colors flex items-center gap-0.5"
                   @click="toggleDescription(project.id)"
                 >
-                  {{ isDescriptionExpanded(project.id) ? t('projects.showLessDescription') : t('projects.showMoreDescription') }}
+                  <span>
+                    {{ isDescriptionExpanded(project.id) ? t('projects.showLess') : t('projects.showMore') }}
+                  </span>
+                  <ChevronDown 
+                    class="size-3 transition-transform duration-300" 
+                    :class="{ 'rotate-180': isDescriptionExpanded(project.id) }" 
+                  />
                 </button>
               </div>
 
