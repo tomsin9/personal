@@ -25,7 +25,8 @@ import {
 } from 'reka-ui'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ExternalLink, Github, ChevronDown, ChevronUp, Code, Pencil, Trash2, Plus } from 'lucide-vue-next'
+import { ExternalLink, Github, ChevronDown, ChevronUp, Code, Pencil, Trash2, Plus, GripVertical } from 'lucide-vue-next'
+import Sortable from 'sortablejs'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ProjectEditDialog from '@/views/ProjectEditDialog.vue'
@@ -50,6 +51,18 @@ const selectedProject = ref<Project | null>(null)
 const deleteDialogOpen = ref(false)
 const projectToDelete = ref<Project | null>(null)
 const isDeleting = ref(false)
+const isReordering = ref(false)
+const projectListRef = ref<HTMLElement | null>(null)
+const listRenderKey = ref(0)
+let sortableInstance: Sortable | null = null
+
+const canReorder = computed(
+  () =>
+    auth.isAdmin &&
+    !isLoading.value &&
+    projects.value.length > 1 &&
+    (isExpanded.value || projects.value.length <= 3)
+)
 
 const fetchProjects = async () => {
   isLoading.value = true
@@ -70,7 +83,13 @@ const displayedProjects = computed(() => {
 })
 
 const toggleExpand = () => {
+  destroySortable()
   isExpanded.value = !isExpanded.value
+  listRenderKey.value++
+  nextTick(() => {
+    initSortable()
+    checkOverflow()
+  })
 }
 
 const openEdit = (project: Project | null) => {
@@ -89,6 +108,74 @@ const handleEditSaved = async () => {
 const openDeleteDialog = (project: Project) => {
   projectToDelete.value = project
   deleteDialogOpen.value = true
+}
+
+const destroySortable = () => {
+  sortableInstance?.destroy()
+  sortableInstance = null
+}
+
+const getProjectListEl = (): HTMLElement | null => {
+  const refOrInstance = projectListRef.value
+  if (!refOrInstance) return null
+  return (refOrInstance as unknown as { $el?: HTMLElement })?.$el ?? (refOrInstance as HTMLElement)
+}
+
+const initSortable = () => {
+  destroySortable()
+  const listEl = getProjectListEl()
+  if (!canReorder.value || !listEl) return
+
+  sortableInstance = Sortable.create(listEl, {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'opacity-50',
+    disabled: isReordering.value,
+    onEnd: handleReorderEnd,
+  })
+}
+
+const handleReorderEnd = async (evt: Sortable.SortableEvent) => {
+  const { oldIndex, newIndex } = evt
+  if (oldIndex == null || newIndex == null || oldIndex === newIndex || !auth.token) return
+
+  const visible = [...displayedProjects.value]
+  const [moved] = visible.splice(oldIndex, 1)
+  visible.splice(newIndex, 0, moved)
+
+  const hidden = isExpanded.value ? [] : projects.value.slice(visible.length)
+  const reordered = [...visible, ...hidden].map((project, index) => ({
+    ...project,
+    order: String(index),
+  }))
+  const previous = [...projects.value]
+  destroySortable()
+  projects.value = reordered
+  listRenderKey.value++
+  isReordering.value = true
+
+  try {
+    await axios.patch(
+      `${apiBaseUrl}/api/v1/projects/reorder`,
+      reordered.map((project) => ({ id: project.id, order: project.order })),
+      { headers: { Authorization: `Bearer ${auth.token}` } }
+    )
+    toast.success(t('projects.reorderSuccess'))
+  } catch (error) {
+    console.error('Failed to reorder projects:', error)
+    projects.value = previous
+    const msg =
+      axios.isAxiosError(error) && error.response?.data?.detail
+        ? String(error.response.data.detail)
+        : axios.isAxiosError(error) && error.response?.status === 401
+          ? t('auth.pleaseLogInAgain')
+          : t('projects.reorderFailed')
+    toast.error(msg)
+    await fetchProjects()
+  } finally {
+    isReordering.value = false
+    nextTick(() => initSortable())
+  }
 }
 
 const confirmDeleteProject = async () => {
@@ -221,6 +308,7 @@ watch([isLoading, displayedProjects], () => {
 
 onUnmounted(() => {
   resizeObserver?.disconnect()
+  destroySortable()
 
   if (scrollTriggerRef.value) {
     scrollTriggerRef.value.kill()
@@ -234,6 +322,10 @@ watch(isLoading, (loading) => {
     checkOverflow();
   }
 });
+
+watch([canReorder, displayedProjects], () => {
+  nextTick(() => initSortable())
+}, { flush: 'post' })
 
 </script>
 
@@ -291,7 +383,14 @@ watch(isLoading, (loading) => {
         </Item>
       </ItemGroup>
     </template>
-    <ItemGroup v-else class="space-y-4">
+    <template v-else>
+      <p
+        v-if="canReorder"
+        class="mb-4 text-xs text-muted-foreground"
+      >
+        {{ t('projects.dragToReorder') }}
+      </p>
+      <ItemGroup ref="projectListRef" :key="`project-list-${listRenderKey}`" class="space-y-4">
       <div
         v-for="project in displayedProjects"
         :key="project.id"
@@ -302,6 +401,15 @@ watch(isLoading, (loading) => {
           class="group w-full rounded-xl p-4 transition-colors bg-card/40 backdrop-blur border border-border/60 hover:border-zinc-500/50"
         >
           <div class="w-full flex items-start md:items-center gap-4">
+            <button
+              v-if="canReorder"
+              type="button"
+              class="drag-handle mt-1 md:mt-0 shrink-0 cursor-grab active:cursor-grabbing rounded-md p-1 text-muted-foreground/60 hover:text-muted-foreground hover:bg-accent/60 transition-colors"
+              :aria-label="t('projects.dragToReorder')"
+              :disabled="isReordering"
+            >
+              <GripVertical class="size-4" />
+            </button>
             <ItemMedia variant="image" class="size-20 md:w-auto md:h-20 md:aspect-[16/9] shrink-0 overflow-hidden rounded-md border flex items-center justify-center">
               <img
                 v-if="project.image"
@@ -387,7 +495,8 @@ watch(isLoading, (loading) => {
         </div>
         </Item>
       </div>
-    </ItemGroup>
+      </ItemGroup>
+    </template>
 
     <div v-if="!isLoading && projects.length > 3" class="mt-10 flex justify-center">
       <Button 

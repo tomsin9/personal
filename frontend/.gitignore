@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# TypeScript accidental emit (e.g. running `tsc` without noEmit)
+*.vue.js
+tsconfig.tsbuildinfo
+src/**/*.js
+!src/i18n.js
+!src/store/auth.js

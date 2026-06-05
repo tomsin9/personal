@@ -5,6 +5,11 @@ dist-ssr/
 *.local
 .eslintcache
 .stylelintcache
+*.vue.js
+frontend/tsconfig.tsbuildinfo
+frontend/src/**/*.js
+!frontend/src/i18n.js
+!frontend/src/store/auth.js
 
 # --- Python / Backend ---
 __pycache__/

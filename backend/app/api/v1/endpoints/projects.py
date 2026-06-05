@@ -7,11 +7,17 @@ from sqlalchemy import cast, Integer
 from typing import List
 from PIL import Image
 from pathlib import Path
+from pydantic import BaseModel
 
 from app.api.deps import get_current_user
 from app.db.session import get_session
 from app.models.project import Project
 from app.schemas.project import ProjectRead
+
+
+class ProjectReorderItem(BaseModel):
+    id: int
+    order: str
 
 router = APIRouter()
 
@@ -38,6 +44,22 @@ def create_project(
     session.commit()
     session.refresh(project_in)
     return project_in
+
+
+@router.patch("/reorder")
+def reorder_projects(
+        items: List[ProjectReorderItem],
+        session: Session = Depends(get_session),
+        username: str = Depends(get_current_user),
+    ):
+    for item in items:
+        db_project = session.get(Project, item.id)
+        if not db_project:
+            raise HTTPException(status_code=404, detail=f"Project {item.id} not found")
+        db_project.order = item.order
+        session.add(db_project)
+    session.commit()
+    return {"ok": True}
 
 
 @router.patch("/{project_id}", response_model=Project)
