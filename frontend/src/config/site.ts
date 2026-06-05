@@ -55,8 +55,8 @@ export const siteConfig = {
     },
     /** Skill groups: key used for i18n (skills.groups.<key>), skills = comma-separated list */
     skills: [
-        { key: 'frontend', skills: 'Vue.js, TypeScript, Tailwind CSS, Bootstrap' },
-        { key: 'backend', skills: 'Python, Django (DRF), FastAPI, PostgreSQL' },
+        { key: 'frontend', skills: 'Vue.js, Next.js, TypeScript, Tailwind CSS, Bootstrap' },
+        { key: 'backend', skills: 'Python, Django, FastAPI, PostgreSQL' },
         { key: 'devops', skills: 'Docker, Git, CI/CD Pipelines' },
         { key: 'aiWorkflow', skills: 'Dify, ComfyUI, SD WebUI' },
         { key: 'design', skills: 'Photoshop, Illustrator, Lightroom, InDesign' },
