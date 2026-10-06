@@ -36,6 +36,13 @@ import type { Project } from '@/types/project'
 
 const { t } = useI18n()
 
+function extractMetrics(text: string): string[] {
+  const matches = text.match(
+    /(?:\+|-)?\d+(?:\.\d+)?%|\d+(?:\.\d+)?s(?:\s*(?:->|→|–|-)\s*\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?x/gi
+  )
+  return [...new Set((matches ?? []).map((m) => m.replace(/\s+/g, ' ').trim()))].slice(0, 4)
+}
+
 gsap.registerPlugin(ScrollTrigger)
 
 const projects = ref<Project[]>([])
@@ -333,10 +340,10 @@ watch([canReorder, displayedProjects], () => {
   <section ref="projectsSectionRef" id="projects" class="container py-20 px-4 md:px-8">
     <div class="projects-section-header flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
-        <h2 id="projects-title" class="text-3xl font-bold tracking-tight mb-4">
+        <h2 id="projects-title" class="text-3xl font-semibold tracking-tight mb-3">
           {{ t('projects.title') }}
         </h2>
-        <!-- <div class="h-[3px] w-16 bg-destructive rounded-full mb-4"></div> -->
+        <div class="h-[2px] w-10 bg-primary mb-4"></div>
         <p class="text-muted-foreground">
           {{ t('projects.description') }}
         </p>
@@ -361,7 +368,7 @@ watch([canReorder, displayedProjects], () => {
           v-for="i in skeletonCount"
           :key="'skeleton-' + i"
           variant="outline"
-          class="p-4 bg-card/80 backdrop-blur-md border border-border/80 hover:border-zinc-500/50"
+          class="p-4 bg-card border border-border"
         >
           <div class="w-full flex items-start md:items-center gap-4">
             <Skeleton class="size-20 md:w-32 md:h-20 shrink-0 rounded-md" />
@@ -398,7 +405,7 @@ watch([canReorder, displayedProjects], () => {
       >
         <Item
           variant="outline"
-          class="group w-full rounded-xl p-4 transition-colors bg-card/40 backdrop-blur border border-border/60 hover:border-zinc-500/50"
+          class="group w-full rounded-sm p-4 transition-colors bg-card border border-border hover:border-primary/40"
         >
           <div class="w-full flex items-start md:items-center gap-4">
             <button
@@ -426,6 +433,16 @@ watch([canReorder, displayedProjects], () => {
                   <ItemTitle class="min-w-0 flex-1 text-lg font-semibold break-words">
                     {{ project.title }}
                   </ItemTitle>
+                  <div v-if="extractMetrics(project.description).length" class="flex flex-wrap gap-1 w-full order-last">
+                    <Badge
+                      v-for="metric in extractMetrics(project.description)"
+                      :key="metric"
+                      variant="outline"
+                      class="text-[10px] px-1.5 h-5 whitespace-nowrap border-primary/30 text-primary font-semibold tabular-nums"
+                    >
+                      {{ metric }}
+                    </Badge>
+                  </div>
                   <div class="flex flex-wrap gap-1">
                     <Badge v-for="tag in project.tags" :key="tag" variant="secondary" class="text-[10px] px-1.5 h-5 whitespace-nowrap">
                       {{ tag }}
@@ -446,7 +463,7 @@ watch([canReorder, displayedProjects], () => {
                 <button
                   v-if="needsToggle[project.id] || isDescriptionExpanded(project.id)"
                   type="button"
-                  class="mt-1.5 text-xs font-semibold text-primary/80 hover:text-primary transition-colors flex items-center gap-0.5"
+                  class="mt-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-0.5"
                   @click="toggleDescription(project.id)"
                 >
                   <span>

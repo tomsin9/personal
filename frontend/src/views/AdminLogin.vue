@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue'
   import { useDark } from '@vueuse/core'
+  import { themeOptions } from '@/lib/theme'
   import axios from 'axios'
   import { auth } from '@/store/auth'
   import { useRouter } from 'vue-router'
@@ -9,7 +10,7 @@
   import { useI18n } from 'vue-i18n'
 
   const { t } = useI18n()
-  const isDark = useDark({ initialValue: 'dark' })
+  const isDark = useDark(themeOptions)
   const turnstileTheme = computed(() => (isDark.value ? 'dark' : 'light'))
   const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITEKEY as string | undefined
   const loginFormRef = ref<HTMLFormElement | null>(null)

@@ -144,7 +144,7 @@ const handleSubmit = async () => {
 
         <div class="space-y-2">
           <Label for="desc">{{ t('projects.descriptionLabel') }}</Label>
-          <Textarea id="desc" v-model="formData.description" class="h-20" />
+          <Textarea id="desc" v-model="formData.description" class="h-24" :placeholder="t('projects.descriptionPlaceholder')" />
         </div>
 
         <div class="grid grid-cols-2 gap-4">

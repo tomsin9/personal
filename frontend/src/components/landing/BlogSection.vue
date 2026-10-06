@@ -91,10 +91,10 @@ onUnmounted(() => {
   <section ref="blogSectionRef" id="blog" class="container py-20 px-4 md:px-8">
     <div class="blog-section-header flex flex-col md:flex-row justify-between items-start mb-12 gap-4">
       <div class="space-y-2">
-        <h2 class="text-3xl font-bold tracking-tight mb-4">
+        <h2 class="text-3xl font-semibold tracking-tight mb-3">
           {{ t('blog.recentPosts') }}
         </h2>
-        <!-- <div class="h-[3px] w-16 bg-destructive rounded-full mb-4"></div> -->
+        <div class="h-[2px] w-10 bg-primary mb-4"></div>
         <p class="text-muted-foreground">
           {{ t('blog.sectionDescription') }}
         </p>

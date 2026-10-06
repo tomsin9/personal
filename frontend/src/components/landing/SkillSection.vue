@@ -69,8 +69,8 @@ onMounted(() => {
 <template>
     <section id="skills" class="container py-24 px-4 md:px-8">
       <div class="mb-16">
-        <h2 class="text-3xl font-bold tracking-tight mb-4">{{ t('skills.title') }}</h2>
-        <!-- <div class="h-[3px] w-16 bg-destructive rounded-full mb-4"></div> -->
+        <h2 class="text-3xl font-semibold tracking-tight mb-3">{{ t('skills.title') }}</h2>
+        <div class="h-[2px] w-10 bg-primary mb-4"></div>
         <p class="text-muted-foreground">
           {{ t('skills.description') }}
         </p>
@@ -80,10 +80,10 @@ onMounted(() => {
         
         <div v-for="group in skillGroups" :key="group.key" class="skill-group space-y-6">
           <div class="skill-group-header space-y-2">
-            <h3 class="text-sm uppercase font-bold text-primary/60">
+            <h3 class="text-sm uppercase font-semibold tracking-wide text-muted-foreground">
               {{ t(`skills.groups.${group.key}`) }}
             </h3>
-            <div class="h-[1px] w-full bg-primary/10"></div>
+            <div class="h-[1px] w-full bg-border"></div>
           </div>
   
           <ul class="flex flex-wrap gap-2">
