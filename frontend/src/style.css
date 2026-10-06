@@ -94,21 +94,21 @@
 
 /* Social link hover effects */
 .social-link[data-social="github"]:hover {
-  background: #3c2a21;
-  border-color: #3c2a21;
-  color: #f6f1e8;
+  background: #181717;
+  border-color: #181717;
+  color: #fff;
 }
 
 .social-link[data-social="linkedin"]:hover {
-  background: #3d5a4c;
-  border-color: #3d5a4c;
-  color: #f6f1e8;
+  background: #0A66C2;
+  border-color: #0A66C2;
+  color: #fff;
 }
 
 .social-link[data-social="instagram"]:hover {
-  background: #c2410c;
-  border-color: #c2410c;
-  color: #f6f1e8;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: #E4405F;
+  color: #fff;
 }
 
 .social-link[data-social="email"]:hover {
