@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, provide } from 'vue'
+import { ref, watch, onMounted, provide } from 'vue'
 import { useDark } from '@vueuse/core'
+import { themeOptions } from '@/lib/theme'
 import FloatingNavbar from './components/FloatingNavbar.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -23,7 +24,7 @@ function getStoredSeasonsEffect(): boolean {
   }
 }
 
-const isDark = useDark({ initialValue: 'dark' })
+const isDark = useDark(themeOptions)
 const seasonsEffectOn = ref(false)
 
 function toggleSeason() {
@@ -39,20 +40,8 @@ watch(seasonsEffectOn, (on) => {
 provide('toggleSeason', toggleSeason)
 provide('seasonsEffectOn', seasonsEffectOn)
 
-const mouseX = ref(50)
-const mouseY = ref(50)
-
-function onMouseMove(e: MouseEvent) {
-  mouseX.value = (e.clientX / window.innerWidth) * 100
-  mouseY.value = (e.clientY / window.innerHeight) * 100
-}
-
 onMounted(() => {
   seasonsEffectOn.value = getStoredSeasonsEffect()
-  window.addEventListener('mousemove', onMouseMove)
-})
-onUnmounted(() => {
-  window.removeEventListener('mousemove', onMouseMove)
 })
 </script>
 
@@ -69,19 +58,6 @@ onUnmounted(() => {
       autoSeason
       fullScreen
       mouseInteraction
-    />
-
-    <!-- Mouse-following glow (stronger in light mode so it's visible on white) -->
-    <div
-      class="pointer-events-none fixed inset-0 z-0"
-      aria-hidden="true"
-      :style="{
-        background: `radial-gradient(
-          circle 40vmax at ${mouseX}% ${mouseY}%,
-          hsl(var(--primary) / ${isDark ? 0.04 : 0}),
-          transparent 60%
-        )`,
-      }"
     />
 
     <div class="relative z-10">

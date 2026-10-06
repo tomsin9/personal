@@ -14,6 +14,10 @@ export default {
       },
     },
   	extend: {
+  		fontFamily: {
+  			sans: ['Source Sans 3', 'PingFang TC', 'Noto Sans TC', 'system-ui', 'sans-serif'],
+  			serif: ['Source Serif 4', 'Georgia', 'Songti TC', 'serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

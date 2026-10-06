@@ -1,9 +1,9 @@
 {
     "system": {
         "toggleTheme": "切換主題",
-        "viewProjects": "查看專案",
+        "viewProjects": "查看作品",
         "aboutMe": "關於我",
-        "contactMe": "聯絡我",
+        "contactMe": "發送電郵",
         "switchToZH": "切換至中文",
         "switchToEN": "切換至英文",
         "lightMode": "日間模式",
@@ -57,7 +57,7 @@
             "frontend": "前端",
             "backend": "後端",
             "devops": "DevOps",
-            "aiWorkflow": "AI & 工作流程",
+            "aiWorkflow": "AI",
             "design": "設計"
         }
     },
@@ -113,6 +113,7 @@
         "updateSuccess": "專案已成功更新。",
         "titleLabel": "標題",
         "descriptionLabel": "描述",
+        "descriptionPlaceholder": "客戶／產品。請以數字說明成果。例如：LCP 4s → 1.2s，轉換率 +15%。",
         "categoryLabel": "分類",
         "orderLabel": "排序",
         "dragToReorder": "拖曳以調整專案順序",
@@ -141,7 +142,7 @@
     "errors": {
         "notFound": {
             "title": "找不到該頁面",
-            "message": "你尋找的頁面不存在或已被移走。"
+            "message": "你尋找的頁面不存在或已經遷移。"
         },
         "goBack": "返回上一頁"
     }

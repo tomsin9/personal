@@ -75,7 +75,7 @@ watch(
 <template>
   <div class="container max-w-5xl pt-12 pb-32 lg:pt-20 lg:pb-40 px-4 md:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+      <h2 class="text-4xl lg:text-5xl font-semibold mb-4">
         {{ t('blog.title') }}
       </h2>
       <p class="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
@@ -95,7 +95,7 @@ watch(
     </div>
 
     <div v-if="isLoading" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 mb-10">
-      <Card v-for="i in skeletonCount" :key="'skeleton-' + i" class="flex flex-col h-full justify-between border-zinc-500/20">
+      <Card v-for="i in skeletonCount" :key="'skeleton-' + i" class="flex flex-col h-full justify-between border-border">
         <CardHeader>
           <div class="flex justify-between items-start mb-2">
             <Skeleton class="h-5 w-16" />

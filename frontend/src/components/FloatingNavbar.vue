@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { LOCALE_STORAGE_KEY } from '@/i18n'
 import { useDark, useToggle } from '@vueuse/core'
+import { themeOptions } from '@/lib/theme'
 import { Home, Briefcase, BookOpen, Mail, Sun, Moon, LogOut, SunSnow } from 'lucide-vue-next'
 import { auth } from '@/store/auth'
 import { Button } from '@/components/ui/button'
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/tooltip'
 
 const { t, locale } = useI18n()
-const isDark = useDark()
+const isDark = useDark(themeOptions)
 const toggleDark = useToggle(isDark)
 
 const route = useRoute()
@@ -150,7 +151,7 @@ onUnmounted(() => {
       <div
         :class="cn(
           'flex items-center gap-0.5 rounded-full border px-2 py-1.5 lg:gap-1',
-          'bg-background/95 border-border shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80'
+          'bg-card/95 border-border shadow-md backdrop-blur supports-[backdrop-filter]:bg-card/85'
         )"
       >
         <template v-for="(item, index) in navItems" :key="index">
@@ -161,7 +162,7 @@ onUnmounted(() => {
                 size="icon"
                 :class="cn(
                   'size-9 rounded-full transition-all duration-200 hover:scale-110 sm:size-10',
-                  isRouteActive(item) && 'text-primary bg-accent/50'
+                  isRouteActive(item) && 'text-primary bg-primary/10'
                 )"
                 @click="item.href.includes('#') ? handleNavClick($event, item) : router.push(item.href)"
               >

@@ -67,21 +67,21 @@ onMounted(() => {
   })
   scrollTriggerRef.value = tl.scrollTrigger ?? null
 
-  tl.from('.animate-text', {
-    y: 30,
+  tl.from(sectionRef.value.querySelectorAll('.animate-text'), {
+    y: 16,
     opacity: 0,
-    duration: 0.8,
-    stagger: 0.2,
-    ease: 'power3.out'
+    duration: 0.5,
+    stagger: 0.12,
+    ease: 'power2.out'
   })
 
   tl.from(sectionRef.value.querySelectorAll('.social-btn'), {
-    scale: 0,
+    y: 10,
     opacity: 0,
-    duration: 0.6,
-    stagger: 0.1,
-    ease: 'back.out(1.7)',
-  }, '-=0.4')
+    duration: 0.4,
+    stagger: 0.08,
+    ease: 'power2.out',
+  }, '-=0.2')
 })
 
 onUnmounted(() => {
@@ -99,13 +99,22 @@ onUnmounted(() => {
     class="contact-section relative py-20 px-6 overflow-hidden scroll-mt-16 scroll-mb-24">
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
-        <h2 class="text-4xl font-bold tracking-tight lg:text-5xl mb-6 animate-text">
-            {{ t('contact.title') }}
-        </h2>
+        <div class="animate-text">
+          <h2 class="text-4xl font-semibold tracking-tight lg:text-5xl mb-4">
+              {{ t('contact.title') }}
+          </h2>
+          <div class="h-[2px] w-10 bg-primary mx-auto mb-6"></div>
+        </div>
         
-        <p class="mx-auto max-w-[700px] text-muted-foreground md:text-xl animate-text">
+        <p class="mx-auto max-w-[640px] text-muted-foreground md:text-lg animate-text">
             {{ t('contact.description') }}
         </p>
+
+        <div class="mt-8 animate-text">
+          <Button as="a" :href="siteConfig.socials.email" size="lg" class="rounded-sm px-8 h-12 font-semibold">
+            {{ t('system.contactMe') }}
+          </Button>
+        </div>
 
         <div class="flex flex-col md:flex-row justify-center items-center gap-8 min-h-[150px] my-12">
           <TooltipProvider :delay-duration="0">
@@ -128,10 +137,9 @@ onUnmounted(() => {
                           rel="noopener noreferrer"
                           size="icon"
                           variant="outline"
-                          class="social-link size-12 rounded-full p-0 border-zinc-300 dark:border-zinc-400/50
-                                  bg-white dark:bg-zinc-900 backdrop-blur-md transition-all duration-300
-                                  hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)]
-                                  active:scale-95 [&_svg]:size-5 text-zinc-700 dark:text-white"
+                          class="social-link size-12 rounded-sm p-0 border-border
+                                  bg-card transition-colors duration-200
+                                  active:scale-95 [&_svg]:size-5 text-foreground"
                         >
                           <component :is="social.icon" />
                         </Button>
@@ -144,7 +152,7 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div v-if="index === 0" class="hidden md:block w-[1px] h-12 bg-zinc-200 dark:bg-zinc-800 mx-4"></div>
+              <div v-if="index === 0" class="hidden md:block w-[1px] h-12 bg-border mx-4"></div>
             </template>
           </TooltipProvider>
         </div>
